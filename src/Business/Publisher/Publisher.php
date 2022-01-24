@@ -40,8 +40,8 @@ class Publisher implements PublisherInterface
     protected function getChannel(): AMQPChannel
     {
         return $this->channelManager->getChannel(
-            $this->publisherConfiguration->getConnection(),
-            $this->publisherConfiguration->getChannel()
+            $this->publisherConfiguration->getChannel(),
+            $this->publisherConfiguration->getConnection()
         );
     }
 

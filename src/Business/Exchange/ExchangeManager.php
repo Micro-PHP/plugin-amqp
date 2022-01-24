@@ -24,7 +24,7 @@ class ExchangeManager implements ExchangeManagerInterface
      */
     public function exchangeDeclare(string $connectionName, string $exchangeName, string $channelName = null): void
     {
-        $channel = $this->channelManager->getChannel($connectionName, $channelName);
+        $channel = $this->channelManager->getChannel($channelName, $connectionName);
         $configuration = $this->pluginConfiguration->getExchangeConfiguration($exchangeName);
 
         $channel->exchange_declare(

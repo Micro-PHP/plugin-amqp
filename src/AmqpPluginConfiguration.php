@@ -20,7 +20,7 @@ use Micro\Plugin\Amqp\Business\Queue\QueueConfigurationInterface;
 
 class AmqpPluginConfiguration extends PluginConfiguration
 {
-    private const CFG_CONNECTION_NAMES_LIST = 'AMQP_CONNECTIONS';
+    private const CFG_CONNECTION_NAMES_LIST = 'AMQP_CONNECTION_LIST';
     private const CFG_QUEUE_LIST = 'AMQP_QUEUE_LIST';
     private const CFG_EXCHANGE_LIST = 'AMQP_EXCHANGE_LIST';
     private const CFG_CHANNEL_LIST = 'AMQP_CHANNEL_LIST';
@@ -46,8 +46,12 @@ class AmqpPluginConfiguration extends PluginConfiguration
 
     public function getPublisherConfiguration(string $publisherName): PublisherConfigurationInterface
     {
-        if(!in_array($publisherName, $this->getConnectionList(), true)) {
-            $this->throwInvalidArgumentException('Publisher is not defined in the environment file. Please, append connection id to "%s"', self::CFG_PUBLISHER_LIST);
+        if(!in_array($publisherName, $this->getPublisherList(), true)) {
+            $this->throwInvalidArgumentException(
+                'Publisher "%s" is not defined in the environment file. Please, append id to "%s"',
+                $publisherName,
+                self::CFG_PUBLISHER_LIST
+            );
         }
 
         return new PublisherConfiguration($this->configuration, $publisherName);
@@ -70,7 +74,11 @@ class AmqpPluginConfiguration extends PluginConfiguration
     public function getConsumerConfiguration(string $consumerName): ConsumerConfigurationInterface
     {
         if(!in_array($consumerName, $this->getConsumerList(), true)) {
-            $this->throwInvalidArgumentException('Consumer is not defined in the environment file. Please, append connection id to "%s"', self::CFG_CONSUMER_LIST);
+            $this->throwInvalidArgumentException(
+                'Consumer "%s " is not defined in the environment file. Please, append id to "%s"',
+                $consumerName,
+                self::CFG_CONSUMER_LIST
+            );
         }
 
         return new ConsumerConfiguration($this->configuration, $consumerName);
@@ -83,7 +91,11 @@ class AmqpPluginConfiguration extends PluginConfiguration
     public function getConnectionConfiguration(string $connectionName): ConnectionConfigurationInterface
     {
         if(!in_array($connectionName, $this->getConnectionList(), true)) {
-            $this->throwInvalidArgumentException('Connection is not defined in the environment file. Please, append connection id to "%s"', self::CFG_CHANNEL_LIST);
+            $this->throwInvalidArgumentException(
+                'Connection "%s" is not defined in the environment file. Please, append connection id to "%s"',
+                $connectionName,
+                self::CFG_CONNECTION_NAMES_LIST
+            );
         }
 
         return new ConnectionConfiguration($this->configuration, $connectionName);
@@ -96,7 +108,11 @@ class AmqpPluginConfiguration extends PluginConfiguration
     public function getQueueConfiguration(string $queueName): QueueConfigurationInterface
     {
         if(!in_array($queueName, $this->getQueueList(), true)) {
-            $this->throwInvalidArgumentException('Queue is not defined in the environment file. Please, append queue id to "%s"', self::CFG_QUEUE_LIST);
+            $this->throwInvalidArgumentException(
+                'Queue "%s", is not defined in the environment file. Please, append queue id to "%s"',
+                $queueName,
+                self::CFG_QUEUE_LIST
+            );
         }
 
         return new QueueConfiguration($this->configuration, $queueName);
@@ -109,7 +125,11 @@ class AmqpPluginConfiguration extends PluginConfiguration
     public function getExchangeConfiguration(string $exchangeName): ExchangeConfigurationInterface
     {
         if(!in_array($exchangeName, $this->getExchangeList(), true)) {
-            $this->throwInvalidArgumentException('Exchange is not defined in the environment file. Please, append channel id to "%s"', self::CFG_EXCHANGE_LIST);
+            $this->throwInvalidArgumentException(
+                'Exchange "%s" is not defined in the environment file. Please, append channel id to "%s"',
+                $exchangeName,
+                self::CFG_EXCHANGE_LIST
+            );
         }
 
         return new ExchangeConfiguration($this->configuration, $exchangeName);
@@ -122,7 +142,11 @@ class AmqpPluginConfiguration extends PluginConfiguration
     public function getChannelConfiguration(string $channelName): ChannelConfigurationInterface
     {
         if(!in_array($channelName, $this->getChannelList(), true)) {
-            $this->throwInvalidArgumentException('Channel is not defined in the environment file. Please, append channel id to "%s"', self::CFG_CHANNEL_LIST);
+            $this->throwInvalidArgumentException(
+                'Channel "%s" is not defined in the environment file. Please, append channel id to "%s"',
+                $channelName,
+                self::CFG_CHANNEL_LIST
+            );
         }
 
         return new ChannelConfiguration($this->configuration, $channelName);

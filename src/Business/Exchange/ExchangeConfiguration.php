@@ -8,16 +8,16 @@ use PhpAmqpLib\Exchange\AMQPExchangeType;
 
 class ExchangeConfiguration extends AbstractAmqpComponentConfiguration implements ExchangeConfigurationInterface
 {
-    private const CFG_TYPE = 'AMQP_QUEUE_%s_TYPE';
-    private const CFG_IS_PASSIVE = 'AMQP_QUEUE_%s_PASSIVE';
-    private const CFG_IS_DURABLE = 'AMQP_QUEUE_%s_DURABLE';
-    private const CFG_IS_AUTO_DELETE = 'AMQP_QUEUE_%s_AUTO_DELETE';
-    private const CFG_IS_INTERNAL = 'AMQP_QUEUE_%s_INTERNAL';
-    private const CFG_IS_NO_WAIT = 'AMQP_QUEUE_%s_NO_WAIT';
-    private const CFG_ARGUMENTS ='AMQP_QUEUE_%s_ARGUMENTS';
-    private const CFG_TICKET ='AMQP_QUEUE_%s_TICKET';
-    private const CFG_CHANNELS = 'AMQP_QUEUE_%s_CHANNELS';
-    private const CFG_CONNECTIONS = 'AMQP_QUEUE_%s_CONNECTIONS';
+    private const CFG_TYPE = 'AMQP_EXCHANGE_%s_TYPE';
+    private const CFG_IS_PASSIVE = 'AMQP_EXCHANGE_%s_PASSIVE';
+    private const CFG_IS_DURABLE = 'AMQP_EXCHANGE_%s_DURABLE';
+    private const CFG_IS_AUTO_DELETE = 'AMQP_EXCHANGE_%s_AUTO_DELETE';
+    private const CFG_IS_INTERNAL = 'AMQP_EXCHANGE_%s_INTERNAL';
+    private const CFG_IS_NO_WAIT = 'AMQP_EXCHANGE_%s_NO_WAIT';
+    private const CFG_ARGUMENTS ='AMQP_EXCHANGE_%s_ARGUMENTS';
+    private const CFG_TICKET ='AMQP_EXCHANGE_%s_TICKET';
+    private const CFG_CHANNELS = 'AMQP_EXCHANGE_%s_CHANNELS';
+    private const CFG_CONNECTIONS = 'AMQP_EXCHANGE_%s_CONNECTIONS';
 
     /**
      * {@inheritDoc}

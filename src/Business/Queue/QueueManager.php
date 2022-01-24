@@ -24,7 +24,7 @@ class QueueManager implements QueueManagerInterface
     public function queueDeclare(string $connectionName, string $queueName, string $channelName = null): void
     {
         $queueConfiguration = $this->pluginConfiguration->getQueueConfiguration($queueName);
-        $channel = $this->channelManager->getChannel($connectionName, $channelName);
+        $channel = $this->channelManager->getChannel($channelName, $connectionName);
         $channel->queue_declare(
             $queueConfiguration->getName(),
             $queueConfiguration->isPassive(),
@@ -88,8 +88,8 @@ class QueueManager implements QueueManagerInterface
 
         foreach ($bindings as $binding) {
             $channel = $this->channelManager->getChannel(
-                $binding->getConnection(),
-                $channelName
+                $channelName,
+                $binding->getConnection()
             );
 
             $channel->queue_bind(
