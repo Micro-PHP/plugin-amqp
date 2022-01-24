@@ -4,20 +4,22 @@ namespace Micro\Plugin\Amqp\Business\Publisher;
 
 use Micro\Plugin\Amqp\Business\Channel\ChannelManagerInterface;
 use Micro\Plugin\Amqp\Business\Message\MessageInterface;
+use Micro\Plugin\Amqp\Business\Serializer\MessageSerializerFactoryInterface;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 
-class MessagePublisher implements MessagePublisherInterface
+class Publisher implements PublisherInterface
 {
     /**
-     * @param ChannelManagerInterface                $channelManager
-     * @param MessagePublisherConfigurationInterface $publisherConfiguration
+     * @param ChannelManagerInterface $channelManager
+     * @param PublisherConfigurationInterface $publisherConfiguration
+     * @param MessageSerializerFactoryInterface $messageSerializerFactory
      */
     public function __construct(
-    private ChannelManagerInterface $channelManager,
-    private MessagePublisherConfigurationInterface $publisherConfiguration
-    ) {
-    }
+        private ChannelManagerInterface                 $channelManager,
+        private PublisherConfigurationInterface         $publisherConfiguration,
+        private MessageSerializerFactoryInterface       $messageSerializerFactory
+    ) {}
 
     /**
      * @param  MessageInterface $message
@@ -50,11 +52,20 @@ class MessagePublisher implements MessagePublisherInterface
     protected function createAmqpMessage(MessageInterface $message): AMQPMessage
     {
         return new AMQPMessage(
-            $message->content(),
+            $this->createContent($message),
             [
                 'content_type'  => $this->publisherConfiguration->getContentType(),
                 'delivery_mode' => $this->publisherConfiguration->getDeliveryMode(),
             ]
         );
+    }
+
+    /**
+     * @param MessageInterface $message
+     * @return string
+     */
+    protected function createContent(MessageInterface $message): string
+    {
+        return $this->messageSerializerFactory->create()->serialize($message);
     }
 }

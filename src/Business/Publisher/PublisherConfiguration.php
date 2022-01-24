@@ -7,7 +7,7 @@ use Micro\Plugin\Amqp\AbstractAmqpComponentConfiguration;
 use Micro\Plugin\Amqp\AmqpPluginConfiguration;
 use PhpAmqpLib\Message\AMQPMessage;
 
-class MessagePublisherConfiguration extends AbstractAmqpComponentConfiguration implements MessagePublisherConfigurationInterface
+class PublisherConfiguration extends AbstractAmqpComponentConfiguration implements PublisherConfigurationInterface
 {
     private const CFG_CONNECTION = 'AMQP_PUBLISHER_%s_CONNECTION';
     private const CFG_CHANNEL = 'AMQP_PUBLISHER_%s_CHANNEL';

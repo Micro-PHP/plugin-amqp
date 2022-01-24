@@ -7,10 +7,10 @@ interface MessageInterface
     /**
      * @return string
      */
-    public function id(): string;
+    public function getId(): string;
 
     /**
      * @return string
      */
-    public function content(): string;
+    public function getContent(): string;
 }

@@ -4,7 +4,7 @@ namespace Micro\Plugin\Amqp\Business\Publisher;
 
 use Micro\Plugin\Amqp\Business\Message\MessageInterface;
 
-interface MessagePublisherInterface
+interface PublisherInterface
 {
     /**
      * @param  MessageInterface $message

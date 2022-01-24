@@ -2,20 +2,9 @@
 
 namespace Micro\Plugin\Amqp;
 
-use Micro\Plugin\Amqp\Business\Consumer\ConsumerInterface;
-use Micro\Plugin\Amqp\Business\Message\MessageInterface;
+use Micro\Plugin\Amqp\Business\Consumer\ConsumerManagerInterface;
+use Micro\Plugin\Amqp\Business\Publisher\PublisherManagerInterface;
 
-interface AmqpFacadeInterface
+interface AmqpFacadeInterface extends ConsumerManagerInterface, PublisherManagerInterface
 {
-    /**
-     * @param  ConsumerInterface $consumer
-     * @return void
-     */
-    public function consume(ConsumerInterface $consumer): void;
-
-    /**
-     * @param  MessageInterface $message
-     * @return void
-     */
-    public function publish(MessageInterface $message): void;
 }

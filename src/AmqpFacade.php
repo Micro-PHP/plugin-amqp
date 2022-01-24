@@ -2,38 +2,46 @@
 
 namespace Micro\Plugin\Amqp;
 
-use Micro\Plugin\Amqp\Business\Consumer\ConsumerInterface;
+use Micro\Plugin\Amqp\Business\Consumer\ConsumerProcessorInterface;
 use Micro\Plugin\Amqp\Business\Consumer\ConsumerManagerInterface;
 use Micro\Plugin\Amqp\Business\Message\MessageInterface;
-use Micro\Plugin\Amqp\Business\Publisher\MessagePublisherManagerInterface;
+use Micro\Plugin\Amqp\Business\Publisher\PublisherManagerInterface;
 
 class AmqpFacade implements AmqpFacadeInterface
 {
     /**
-     * @param ConsumerManagerInterface         $consumerManager
-     * @param MessagePublisherManagerInterface $publisherManager
+     * @param ConsumerManagerInterface $consumerManager
+     * @param PublisherManagerInterface $publisherManager
      */
     public function __construct(
-        // private ConsumerManagerInterface $consumerManager,
-    private MessagePublisherManagerInterface $publisherManager
-    ) {
-    }
+        private ConsumerManagerInterface $consumerManager,
+        private PublisherManagerInterface $publisherManager
+    ) {}
 
     /**
-     * @param  ConsumerInterface $consumer
-     * @return void
+     * {@inheritDoc}
      */
-    public function consume(ConsumerInterface $consumer): void
+    public function registerConsumerProcessor(
+        ConsumerProcessorInterface $consumerProcessor,
+        string $consumerName = AmqpPluginConfiguration::CONSUMER_DEFAULT
+    ): void
     {
-        // $this->consumerManager->consume($consumer);
+        $this->consumerManager->registerConsumerProcessor($consumerProcessor, $consumerName);
     }
 
     /**
-     * @param  MessageInterface $message
-     * @return void
+     * {@inheritDoc}
+     */
+    public function consume(string $consumerName = AmqpPluginConfiguration::CONSUMER_DEFAULT): void
+    {
+        $this->consumerManager->consume($consumerName);
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public function publish(MessageInterface $message, string $publisherName = AmqpPluginConfiguration::PUBLISHER_DEFAULT): void
     {
-        $this->publisherManager->getPublisher($publisherName)->publish($message);
+        $this->publisherManager->publish($message, $publisherName);
     }
 }

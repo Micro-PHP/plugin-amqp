@@ -15,7 +15,7 @@ class Message implements MessageInterface
     /**
      * {@inheritDoc}
      */
-    public function content(): string
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -23,8 +23,8 @@ class Message implements MessageInterface
     /**
      * {@inheritDoc}
      */
-    public function id(): string
+    public function getId(): string
     {
-        return (string)$this->id;
+        return $this->id;
     }
 }

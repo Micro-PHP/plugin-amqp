@@ -9,10 +9,12 @@ use Micro\Plugin\Amqp\Business\Channel\ChannelConfiguration;
 use Micro\Plugin\Amqp\Business\Channel\ChannelConfigurationInterface;
 use Micro\Plugin\Amqp\Business\Connection\ConnectionConfiguration;
 use Micro\Plugin\Amqp\Business\Connection\ConnectionConfigurationInterface;
+use Micro\Plugin\Amqp\Business\Consumer\ConsumerConfiguration;
+use Micro\Plugin\Amqp\Business\Consumer\ConsumerConfigurationInterface;
 use Micro\Plugin\Amqp\Business\Exchange\ExchangeConfiguration;
 use Micro\Plugin\Amqp\Business\Exchange\ExchangeConfigurationInterface;
-use Micro\Plugin\Amqp\Business\Publisher\MessagePublisherConfiguration;
-use Micro\Plugin\Amqp\Business\Publisher\MessagePublisherConfigurationInterface;
+use Micro\Plugin\Amqp\Business\Publisher\PublisherConfiguration;
+use Micro\Plugin\Amqp\Business\Publisher\PublisherConfigurationInterface;
 use Micro\Plugin\Amqp\Business\Queue\QueueConfiguration;
 use Micro\Plugin\Amqp\Business\Queue\QueueConfigurationInterface;
 
@@ -23,7 +25,9 @@ class AmqpPluginConfiguration extends PluginConfiguration
     private const CFG_EXCHANGE_LIST = 'AMQP_EXCHANGE_LIST';
     private const CFG_CHANNEL_LIST = 'AMQP_CHANNEL_LIST';
     private const CFG_PUBLISHER_LIST = 'AMQP_PUBLISHER_LIST';
+    private const CFG_CONSUMER_LIST = 'AMQP_CONSUMER_LIST';
 
+    public const CONSUMER_DEFAULT = 'default';
     public const EXCHANGE_DEFAULT = 'default';
     public const QUEUE_DEFAULT = 'default';
     public const CHANNEL_DEFAULT = 'default';
@@ -40,13 +44,36 @@ class AmqpPluginConfiguration extends PluginConfiguration
         return $this->explodeStringToArray($publisherList);
     }
 
-    public function getPublisherConfiguration(string $publisherName): MessagePublisherConfigurationInterface
+    public function getPublisherConfiguration(string $publisherName): PublisherConfigurationInterface
     {
         if(!in_array($publisherName, $this->getConnectionList(), true)) {
             $this->throwInvalidArgumentException('Publisher is not defined in the environment file. Please, append connection id to "%s"', self::CFG_PUBLISHER_LIST);
         }
 
-        return new MessagePublisherConfiguration($this->configuration, $publisherName);
+        return new PublisherConfiguration($this->configuration, $publisherName);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getConsumerList(): array
+    {
+        $consumerList = $this->configuration->get(self::CFG_CONSUMER_LIST, self::CONSUMER_DEFAULT);
+
+        return $this->explodeStringToArray($consumerList);
+    }
+
+    /**
+     * @param string $consumerName
+     * @return ConsumerConfigurationInterface
+     */
+    public function getConsumerConfiguration(string $consumerName): ConsumerConfigurationInterface
+    {
+        if(!in_array($consumerName, $this->getConsumerList(), true)) {
+            $this->throwInvalidArgumentException('Consumer is not defined in the environment file. Please, append connection id to "%s"', self::CFG_CONSUMER_LIST);
+        }
+
+        return new ConsumerConfiguration($this->configuration, $consumerName);
     }
 
     /**

@@ -2,9 +2,8 @@
 
 namespace Micro\Plugin\Amqp\Business\Publisher;
 
-use PhpAmqpLib\Message\AMQPMessage;
 
-interface MessagePublisherConfigurationInterface
+interface PublisherConfigurationInterface
 {
     /**
      * @return string

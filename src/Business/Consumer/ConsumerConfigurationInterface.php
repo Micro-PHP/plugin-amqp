@@ -5,14 +5,38 @@ namespace Micro\Plugin\Amqp\Business\Consumer;
 interface ConsumerConfigurationInterface
 {
     /**
-     * @return string[]
+     * @return bool
      */
-    public function getChannels(): array;
+    public function isNoWait(): bool;
 
     /**
-     * @return string[]
+     * @return bool
      */
-    public function getConnections(): array;
+    public function isExclusive(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isNoAck(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isNoLocal(): bool;
+    /**
+     * @return string
+     */
+    public function getQueue(): string;
+
+    /**
+     * @return string
+     */
+    public function getChannel(): string;
+
+    /**
+     * @return string
+     */
+    public function getConnection(): string;
 
     /**
      * @return string
