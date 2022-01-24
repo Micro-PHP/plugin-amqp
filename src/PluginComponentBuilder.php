@@ -24,24 +24,24 @@ use Psr\Log\LoggerInterface;
 class PluginComponentBuilder implements PluginComponentBuilderInterface
 {
     /**
-     * @var ConnectionManagerInterface|null
+     * @var ConnectionManagerInterface
      */
-    protected ?ConnectionManagerInterface $connectionManager = null;
+    protected ConnectionManagerInterface $connectionManager;
 
     /**
-     * @var ChannelManagerInterface|null
+     * @var ChannelManagerInterface
      */
-    protected ?ChannelManagerInterface $channelManager = null;
+    protected ChannelManagerInterface $channelManager;
 
     /**
-     * @var ExchangeManagerInterface|null
+     * @var ExchangeManagerInterface
      */
-    protected ?ExchangeManagerInterface $exchangeManager = null;
+    protected ExchangeManagerInterface $exchangeManager;
 
     /**
-     * @var QueueManagerInterface|null
+     * @var QueueManagerInterface
      */
-    protected ?QueueManagerInterface $queueManager = null;
+    protected QueueManagerInterface $queueManager;
 
     /**
      * @var bool
