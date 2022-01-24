@@ -26,12 +26,12 @@ use Micro\Plugin\Amqp\Business\Queue\QueueManagerInterface;
 use Micro\Plugin\Amqp\Business\Serializer\MessageSerializerFactory;
 use Micro\Plugin\Amqp\Business\Serializer\MessageSerializerFactoryInterface;
 use Micro\Plugin\Amqp\Console\ConsumeCommand;
-use Micro\Plugin\Console\ConsoleApplicationFacadeInterface;
+use Micro\Plugin\Console\CommandProviderInterface;
 use Micro\Plugin\Logger\LoggerPlugin;
 use Micro\Plugin\Serializer\SerializerFacadeInterface;
 
 
-class AmqpPlugin extends AbstractPlugin implements ApplicationListenerProviderPluginInterface
+class AmqpPlugin extends AbstractPlugin implements ApplicationListenerProviderPluginInterface, CommandProviderInterface
 {
     /**
      * @var Container
@@ -70,16 +70,16 @@ class AmqpPlugin extends AbstractPlugin implements ApplicationListenerProviderPl
                 return $this->createAmqpFacade($container);
             }
         );
-
-        $this->provideCommands($container);
     }
 
-    protected function provideCommands(Container $container): void
+    /**
+     * {@inheritDoc}
+     */
+    public function provideCommands(Container $container): array
     {
-        /** @var ConsoleApplicationFacadeInterface $consoleFacade */
-        $consoleFacade = $container->get(ConsoleApplicationFacadeInterface::class);
-
-        $consoleFacade->registerCommand($this->createCommandConsume($container));
+        return [
+            $this->createCommandConsume($container)
+        ];
     }
 
     /**
