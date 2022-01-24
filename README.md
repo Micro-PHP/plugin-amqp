@@ -60,6 +60,13 @@ $amqpFacade->registerConsumerProcessor(new ConsumerProcessor());
 $ bin/console micro:amqp:consume
 ```
 
+#### Send message
+```php
+$id = 'Some unique key';
+$message = new Message($id, 'Book created !');
+$container->get(AmqpFacadeInterface::class)->publish($message, 'book');
+```
+
 ## Other docs
 
  * ### [Full configuration list](docs/Configuration.md) 
