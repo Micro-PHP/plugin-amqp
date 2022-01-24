@@ -10,13 +10,23 @@ use Micro\Plugin\Amqp\Business\Publisher\PublisherManagerInterface;
 class AmqpFacade implements AmqpFacadeInterface
 {
     /**
-     * @param ConsumerManagerInterface $consumerManager
-     * @param PublisherManagerInterface $publisherManager
+     * @var ConsumerManagerInterface
      */
-    public function __construct(
-        private ConsumerManagerInterface $consumerManager,
-        private PublisherManagerInterface $publisherManager
-    ) {}
+    private ConsumerManagerInterface $consumerManager;
+
+    /**
+     * @var PublisherManagerInterface
+     */
+    private PublisherManagerInterface $publisherManager;
+
+    /**
+     * @param PluginComponentBuilderInterface $pluginComponentBuilder
+     */
+    public function __construct(private PluginComponentBuilderInterface $pluginComponentBuilder)
+    {
+        $this->consumerManager = $this->pluginComponentBuilder->createConsumerManager();
+        $this->publisherManager = $this->pluginComponentBuilder->createMessagePublisherManager();
+    }
 
     /**
      * {@inheritDoc}
@@ -34,7 +44,7 @@ class AmqpFacade implements AmqpFacadeInterface
      */
     public function consume(string $consumerName = AmqpPluginConfiguration::CONSUMER_DEFAULT): void
     {
-        $this->consumerManager->consume($consumerName);
+        $this->initialize()->consumerManager->consume($consumerName);
     }
 
     /**
@@ -42,6 +52,24 @@ class AmqpFacade implements AmqpFacadeInterface
      */
     public function publish(MessageInterface $message, string $publisherName = AmqpPluginConfiguration::PUBLISHER_DEFAULT): void
     {
-        $this->publisherManager->publish($message, $publisherName);
+        $this->initialize()->publisherManager->publish($message, $publisherName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function terminate(): void
+    {
+        $this->pluginComponentBuilder->getConnectionManager()->closeConnectionsAll();
+    }
+
+    /**
+     * @return $this
+     */
+    protected function initialize(): self
+    {
+        $this->pluginComponentBuilder->initialize();
+
+        return $this;
     }
 }

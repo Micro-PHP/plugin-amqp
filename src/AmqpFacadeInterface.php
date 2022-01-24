@@ -7,4 +7,8 @@ use Micro\Plugin\Amqp\Business\Publisher\PublisherManagerInterface;
 
 interface AmqpFacadeInterface extends ConsumerManagerInterface, PublisherManagerInterface
 {
+    /**
+     * @return void
+     */
+    public function terminate(): void;
 }

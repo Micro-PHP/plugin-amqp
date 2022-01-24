@@ -13,11 +13,10 @@ class QueueManager implements QueueManagerInterface
      * @param AmqpPluginConfiguration $pluginConfiguration
      */
     public function __construct(
-    private ChannelManagerInterface $channelManager,
-    private AmqpPluginConfiguration $pluginConfiguration,
-    private LoggerInterface $logger
-    ) {
-    }
+        private ChannelManagerInterface $channelManager,
+        private AmqpPluginConfiguration $pluginConfiguration,
+        private LoggerInterface $logger
+    ) {}
 
     /**
      * {@inheritDoc}

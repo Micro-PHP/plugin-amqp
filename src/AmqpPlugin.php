@@ -6,29 +6,16 @@ use Micro\Component\DependencyInjection\Container;
 use Micro\Component\EventEmitter\EventListenerInterface;
 use Micro\Framework\Kernel\Plugin\AbstractPlugin;
 use Micro\Kernel\App\Business\ApplicationListenerProviderPluginInterface;
-use Micro\Plugin\Amqp\Business\Channel\ChannelManager;
-use Micro\Plugin\Amqp\Business\Channel\ChannelManagerInterface;
-use Micro\Plugin\Amqp\Business\Connection\ConnectionBuilder;
-use Micro\Plugin\Amqp\Business\Connection\ConnectionManager;
-use Micro\Plugin\Amqp\Business\Connection\ConnectionManagerInterface;
-use Micro\Plugin\Amqp\Business\Consumer\ConsumerManager;
-use Micro\Plugin\Amqp\Business\Consumer\ConsumerManagerInterface;
 use Micro\Plugin\Amqp\Business\EventLisneter\TerminateApplicationEventListener;
-use Micro\Plugin\Amqp\Business\Exchange\ExchangeManager;
-use Micro\Plugin\Amqp\Business\Exchange\ExchangeManagerInterface;
-use Micro\Plugin\Amqp\Business\Message\MessagePublisherInterface;
-use Micro\Plugin\Amqp\Business\Publisher\PublisherFactory;
-use Micro\Plugin\Amqp\Business\Publisher\PublisherFactoryInterface;
-use Micro\Plugin\Amqp\Business\Publisher\PublisherManager;
-use Micro\Plugin\Amqp\Business\Publisher\PublisherManagerInterface;
-use Micro\Plugin\Amqp\Business\Queue\QueueManager;
-use Micro\Plugin\Amqp\Business\Queue\QueueManagerInterface;
 use Micro\Plugin\Amqp\Business\Serializer\MessageSerializerFactory;
 use Micro\Plugin\Amqp\Business\Serializer\MessageSerializerFactoryInterface;
 use Micro\Plugin\Amqp\Console\ConsumeCommand;
+use Micro\Plugin\Amqp\Console\ConsumerListCommand;
+use Micro\Plugin\Amqp\Console\PublisherListCommand;
 use Micro\Plugin\Console\CommandProviderInterface;
 use Micro\Plugin\Logger\LoggerPlugin;
 use Micro\Plugin\Serializer\SerializerFacadeInterface;
+use Symfony\Component\Console\Command\Command;
 
 
 class AmqpPlugin extends AbstractPlugin implements ApplicationListenerProviderPluginInterface, CommandProviderInterface
@@ -36,27 +23,7 @@ class AmqpPlugin extends AbstractPlugin implements ApplicationListenerProviderPl
     /**
      * @var Container
      */
-    protected Container $container;
-
-    /**
-     * @var ConnectionManagerInterface|null
-     */
-    protected ?ConnectionManagerInterface $connectionManager = null;
-
-    /**
-     * @var ChannelManagerInterface|null
-     */
-    protected ?ChannelManagerInterface $channelManager = null;
-
-    /**
-     * @var ExchangeManagerInterface|null
-     */
-    protected ?ExchangeManagerInterface $exchangeManager = null;
-
-    /**
-     * @var QueueManagerInterface|null
-     */
-    protected ?QueueManagerInterface $queueManager = null;
+    private Container $container;
 
     /**
      * {@inheritDoc}
@@ -75,22 +42,37 @@ class AmqpPlugin extends AbstractPlugin implements ApplicationListenerProviderPl
     /**
      * {@inheritDoc}
      */
-    public function provideCommands(Container $container): array
+    public function provideConsoleCommands(Container $container): array
     {
         return [
-            $this->createCommandConsume($container)
+            $this->createCommandConsume(),
+            $this->createCommandListConsumer(),
+            $this->createCommandListPublisher(),
         ];
     }
 
     /**
-     * @param Container $container
-     * @return ConsumeCommand
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @return Command
      */
-    protected function createCommandConsume(Container $container): ConsumeCommand
+    protected function createCommandListConsumer(): Command
     {
-        return new ConsumeCommand($container->get(AmqpFacadeInterface::class));
+        return new ConsumerListCommand($this->configuration);
+    }
+
+    /**
+     * @return Command
+     */
+    protected function createCommandListPublisher(): Command
+    {
+        return new PublisherListCommand($this->configuration);
+    }
+
+    /**
+     * @return ConsumeCommand
+     */
+    protected function createCommandConsume(): Command
+    {
+        return new ConsumeCommand($this->container->get(AmqpFacadeInterface::class));
     }
 
     /**
@@ -108,92 +90,35 @@ class AmqpPlugin extends AbstractPlugin implements ApplicationListenerProviderPl
      */
     protected function createTerminateEventListener(): EventListenerInterface
     {
-        return new TerminateApplicationEventListener($this->connectionManager);
+        return new TerminateApplicationEventListener($this->container->get(AmqpFacadeInterface::class));
     }
 
     /**
-     * @param  Container $container
-     * @return void
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     */
-    protected function initCoreManagers(Container $container): void
-    {
-        $logger = $container->get(LoggerPlugin::SERVICE_LOGGER);
-
-        $this->connectionManager = new ConnectionManager($this->configuration, new ConnectionBuilder(), $logger);
-        $this->channelManager = new ChannelManager($this->connectionManager, $logger);
-        $this->queueManager = new QueueManager($this->channelManager, $this->configuration, $logger);
-        $this->exchangeManager = new ExchangeManager($this->channelManager, $this->configuration, $logger);
-
-        $this->queueManager->configure();
-        $this->exchangeManager->configure();
-        $this->queueManager->bindings();
-    }
-
-    /**
-     * @param  Container $container
+     * @param Container $container
      * @return AmqpFacadeInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     protected function createAmqpFacade(Container $container): AmqpFacadeInterface
     {
-        $this->initCoreManagers($container);
-
-        return new AmqpFacade(
-            $this->createConsumerManager($container),
-            $this->createMessagePublisherManager($container)
-        );
+        return new AmqpFacade($this->createPluginComponentBuilder());
     }
 
     /**
-     * @param Container $container
-     * @return ConsumerManagerInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @return PluginComponentBuilderInterface
      */
-    protected function createConsumerManager(Container $container): ConsumerManagerInterface
+    protected function createPluginComponentBuilder(): PluginComponentBuilderInterface
     {
-        return new ConsumerManager(
+        return new PluginComponentBuilder(
             $this->configuration,
-            $this->channelManager,
-            $this->createMessageSerializerFactory($container)
+            $this->createMessageSerializerFactory(),
+            $this->container->get(LoggerPlugin::SERVICE_LOGGER)
         );
     }
 
     /**
-     * @param  Container $container
-     * @return MessagePublisherInterface
-     */
-    protected function createMessagePublisherManager(Container $container): PublisherManagerInterface
-    {
-        return new PublisherManager($this->createPublisherFactory($container));
-    }
-
-    /**
-     * @param Container $container
      * @return MessageSerializerFactoryInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    protected function createMessageSerializerFactory(Container $container): MessageSerializerFactoryInterface
+    protected function createMessageSerializerFactory(): MessageSerializerFactoryInterface
     {
-        return new MessageSerializerFactory($container->get(SerializerFacadeInterface::class));
-    }
-
-    /**
-     * @param Container $container
-     * @return PublisherFactoryInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     */
-    protected function createPublisherFactory(Container $container): PublisherFactoryInterface
-    {
-        return new PublisherFactory(
-            $this->channelManager,
-            $this->configuration,
-            $this->createMessageSerializerFactory($container)
-        );
+        return new MessageSerializerFactory($this->container->get(SerializerFacadeInterface::class));
     }
 }

@@ -5,14 +5,15 @@ namespace Micro\Plugin\Amqp\Business\EventLisneter;
 use Micro\Component\EventEmitter\EventInterface;
 use Micro\Component\EventEmitter\EventListenerInterface;
 use Micro\Kernel\App\Business\Event\ApplicationTerminatedEvent;
+use Micro\Plugin\Amqp\AmqpFacadeInterface;
 use Micro\Plugin\Amqp\Business\Connection\ConnectionManagerInterface;
 
 class TerminateApplicationEventListener implements EventListenerInterface
 {
     /**
-     * @param ConnectionManagerInterface|null $connectionManager
+     * @param AmqpFacadeInterface $amqpFacade
      */
-    public function __construct(private ?ConnectionManagerInterface $connectionManager)
+    public function __construct(private AmqpFacadeInterface $amqpFacade)
     {
     }
 
@@ -22,11 +23,7 @@ class TerminateApplicationEventListener implements EventListenerInterface
      */
     public function on(EventInterface $event): void
     {
-        if(!$this->connectionManager) {
-            return;
-        }
-
-        $this->connectionManager->closeConnectionsAll();
+        $this->amqpFacade->terminate();
     }
 
     /**
