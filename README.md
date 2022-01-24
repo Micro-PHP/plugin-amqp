@@ -64,7 +64,7 @@ $ bin/console micro:amqp:consume
 ```php
 $id = 'Some unique key';
 $message = new Message($id, 'Book created !');
-$container->get(AmqpFacadeInterface::class)->publish($message, 'book');
+$container->get(AmqpFacadeInterface::class)->publish($message);
 ```
 
 ## Other docs
