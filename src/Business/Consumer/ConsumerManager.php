@@ -65,7 +65,7 @@ class ConsumerManager implements ConsumerManagerInterface
     protected function getConsumerProcessorCollection(string $consumerName)
     {
         if(!array_key_exists($consumerName, $this->consumerProcessorCollection)) {
-            return null;
+            return [];
         }
 
         return $this->consumerProcessorCollection[$consumerName];
