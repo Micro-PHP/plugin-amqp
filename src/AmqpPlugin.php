@@ -4,8 +4,10 @@ namespace Micro\Plugin\Amqp;
 
 use Micro\Component\DependencyInjection\Container;
 use Micro\Component\EventEmitter\EventListenerInterface;
+use Micro\Component\EventEmitter\ListenerProviderInterface;
 use Micro\Framework\Kernel\Plugin\AbstractPlugin;
 use Micro\Kernel\App\Business\ApplicationListenerProviderPluginInterface;
+use Micro\Plugin\Amqp\Business\EventLisneter\ListenerProvider;
 use Micro\Plugin\Amqp\Business\EventLisneter\TerminateApplicationEventListener;
 use Micro\Plugin\Amqp\Business\Serializer\MessageSerializerFactory;
 use Micro\Plugin\Amqp\Business\Serializer\MessageSerializerFactoryInterface;
@@ -13,7 +15,7 @@ use Micro\Plugin\Amqp\Console\ConsumeCommand;
 use Micro\Plugin\Amqp\Console\ConsumerListCommand;
 use Micro\Plugin\Amqp\Console\PublisherListCommand;
 use Micro\Plugin\Console\CommandProviderInterface;
-use Micro\Plugin\Logger\LoggerPlugin;
+use Micro\Plugin\Logger\LoggerFacadeInterface;
 use Micro\Plugin\Serializer\SerializerFacadeInterface;
 use Symfony\Component\Console\Command\Command;
 
@@ -78,11 +80,11 @@ class AmqpPlugin extends AbstractPlugin implements ApplicationListenerProviderPl
     /**
      * {@inheritDoc}
      */
-    public function provideEventListeners(): array
+    public function getEventListenerProvider(): ListenerProviderInterface
     {
-        return [
+        return new ListenerProvider(
             $this->createTerminateEventListener(),
-        ];
+        );
     }
 
     /**
@@ -110,7 +112,7 @@ class AmqpPlugin extends AbstractPlugin implements ApplicationListenerProviderPl
         return new PluginComponentBuilder(
             $this->configuration,
             $this->createMessageSerializerFactory(),
-            $this->container->get(LoggerPlugin::SERVICE_LOGGER)
+            $this->container->get(LoggerFacadeInterface::class)->getLogger()
         );
     }
 
