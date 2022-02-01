@@ -35,7 +35,6 @@ class ConsumerListCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-
         $table = new Table($output);
         $table->setHeaders([
             'Consumer', 'Channel', 'Queue', 'Connection', 'Tag'
