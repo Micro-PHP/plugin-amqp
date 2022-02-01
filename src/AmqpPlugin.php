@@ -102,7 +102,10 @@ class AmqpPlugin extends AbstractPlugin implements ApplicationListenerProviderPl
      */
     protected function createAmqpFacade(Container $container): AmqpFacadeInterface
     {
-        return new AmqpFacade($this->createPluginComponentBuilder());
+        return new AmqpFacade(
+            $this->createPluginComponentBuilder(),
+            $this->createMessageSerializerFactory()
+        );
     }
 
     /**

@@ -2,9 +2,10 @@
 
 namespace Micro\Plugin\Amqp\Event;
 
+use Micro\Component\EventEmitter\EventInterface;
 use Micro\Plugin\Amqp\Business\Message\MessageReceivedInterface;
 
-abstract class AbstractMessageReceivedEvent implements MessageReceivedEventInterface
+abstract class AbstractMessageReceivedEvent implements EventInterface
 {
     /**
      * @param MessageReceivedInterface $messageReceived

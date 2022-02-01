@@ -12,7 +12,6 @@ class QueueConfiguration extends AbstractAmqpComponentConfiguration implements Q
     private const CFG_EXCLUSIVE = 'AMQP_QUEUE_%s_EXCLUSIVE';
     private const CFG_AUTO_DELETE = 'AMQP_QUEUE_%s_AUTO_DELETE';
     private const CFG_CONNECTION_LIST = 'AMQP_QUEUE_%s_CONNECTIONS';
-    private const CFG_CHANNEL_LIST = 'AMQP_QUEUE_%s_CHANNELS';
 
     /**
      * {@inheritDoc}

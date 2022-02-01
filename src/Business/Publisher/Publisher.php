@@ -32,12 +32,11 @@ class Publisher implements PublisherInterface
     public function publish(MessageInterface $message): void
     {
         $channel = $this->getChannel();
+        $this->eventsFacade->emit(new PublishMessageEvent($message, $this->publisherConfiguration));
         $channel->basic_publish(
             $this->createAmqpMessage($message),
             $this->publisherConfiguration->getExchange()
         );
-
-        $this->eventsFacade->emit(new PublishMessageEvent($message, $this->publisherConfiguration));
     }
 
     /**
