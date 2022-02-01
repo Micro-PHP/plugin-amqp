@@ -5,6 +5,9 @@ namespace Micro\Plugin\Amqp\Business\Consumer;
 use Micro\Plugin\Amqp\AmqpPluginConfiguration;
 use Micro\Plugin\Amqp\Business\Channel\ChannelManagerInterface;
 use Micro\Plugin\Amqp\Business\Serializer\MessageSerializerFactoryInterface;
+use Micro\Plugin\Amqp\Event\ConsumerFinishEvent;
+use Micro\Plugin\Amqp\Event\ConsumerStartEvent;
+use Micro\Plugin\EventEmitter\EventsFacadeInterface;
 use PhpAmqpLib\Channel\AMQPChannel;
 
 class ConsumerManager implements ConsumerManagerInterface
@@ -18,11 +21,13 @@ class ConsumerManager implements ConsumerManagerInterface
      * @param AmqpPluginConfiguration $pluginConfiguration
      * @param ChannelManagerInterface $channelManager
      * @param MessageSerializerFactoryInterface $messageSerializerFactory
+     * @param EventsFacadeInterface $eventsFacade
      */
     public function __construct(
         private AmqpPluginConfiguration $pluginConfiguration,
         private ChannelManagerInterface $channelManager,
-        private MessageSerializerFactoryInterface $messageSerializerFactory
+        private MessageSerializerFactoryInterface $messageSerializerFactory,
+        private EventsFacadeInterface $eventsFacade
     )
     {
         $this->consumerProcessorCollection = [];
@@ -35,10 +40,13 @@ class ConsumerManager implements ConsumerManagerInterface
      */
     public function consume(string $consumerName = AmqpPluginConfiguration::CONSUMER_DEFAULT): void
     {
+        $this->eventsFacade->emit(new ConsumerStartEvent($consumerName));
         $channel = $this->declareConsumer($consumerName);
         while ($channel->is_consuming()) {
             $channel->wait();
         }
+
+        $this->eventsFacade->emit(new ConsumerFinishEvent($consumerName));
     }
 
     /**
@@ -112,6 +120,9 @@ class ConsumerManager implements ConsumerManagerInterface
      */
     protected function createProcessorProxyBuilder(): ConsumerProcessorProxyBuilder
     {
-        return new ConsumerProcessorProxyBuilder($this->messageSerializerFactory);
+        return new ConsumerProcessorProxyBuilder(
+            $this->messageSerializerFactory,
+            $this->eventsFacade
+        );
     }
 }

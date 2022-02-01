@@ -4,7 +4,7 @@ namespace Micro\Plugin\Amqp\Business\Queue;
 
 use Micro\Plugin\Amqp\AmqpPluginConfiguration;
 use Micro\Plugin\Amqp\Business\Channel\ChannelManagerInterface;
-use Psr\Log\LoggerInterface;
+
 
 class QueueManager implements QueueManagerInterface
 {
@@ -14,8 +14,7 @@ class QueueManager implements QueueManagerInterface
      */
     public function __construct(
         private ChannelManagerInterface $channelManager,
-        private AmqpPluginConfiguration $pluginConfiguration,
-        private LoggerInterface $logger
+        private AmqpPluginConfiguration $pluginConfiguration
     ) {}
 
     /**
@@ -31,14 +30,6 @@ class QueueManager implements QueueManagerInterface
             $queueConfiguration->isDurable(),
             $queueConfiguration->isExclusive(),
             $queueConfiguration->isAutoDelete()
-        );
-
-        $this->logger->debug(
-            'AMQP: Declare queue', [
-            'queue' => $queueName,
-            'channel' => $channelName,
-            'connection'    => $connectionName,
-            ]
         );
     }
 

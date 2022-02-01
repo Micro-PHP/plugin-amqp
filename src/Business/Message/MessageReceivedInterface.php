@@ -12,11 +12,6 @@ interface MessageReceivedInterface
     public function content(): MessageInterface;
 
     /**
-     * @return AMQPMessage
-     */
-    public function source(): AMQPMessage;
-
-    /**
      * @param bool $multiple
      * @return void
      */

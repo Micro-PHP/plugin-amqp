@@ -173,7 +173,7 @@ class ConnectionConfiguration extends AbstractAmqpComponentConfiguration impleme
     }
 
     /**
-     * @return void
+     * {@inheritDoc}
      */
     public function validateSslConfiguration(): void
     {

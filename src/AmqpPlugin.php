@@ -15,6 +15,7 @@ use Micro\Plugin\Amqp\Console\ConsumeCommand;
 use Micro\Plugin\Amqp\Console\ConsumerListCommand;
 use Micro\Plugin\Amqp\Console\PublisherListCommand;
 use Micro\Plugin\Console\CommandProviderInterface;
+use Micro\Plugin\EventEmitter\EventsFacadeInterface;
 use Micro\Plugin\Logger\LoggerFacadeInterface;
 use Micro\Plugin\Serializer\SerializerFacadeInterface;
 use Symfony\Component\Console\Command\Command;
@@ -112,8 +113,16 @@ class AmqpPlugin extends AbstractPlugin implements ApplicationListenerProviderPl
         return new PluginComponentBuilder(
             $this->configuration,
             $this->createMessageSerializerFactory(),
-            $this->container->get(LoggerFacadeInterface::class)->getLogger()
+            $this->lookupEventsFacade()
         );
+    }
+
+    /**
+     * @return EventsFacadeInterface
+     */
+    protected function lookupEventsFacade(): EventsFacadeInterface
+    {
+        return $this->container->get(EventsFacadeInterface::class);
     }
 
     /**

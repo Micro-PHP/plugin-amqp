@@ -7,6 +7,8 @@ use Micro\Plugin\Amqp\Business\Message\MessageInterface;
 use Micro\Plugin\Amqp\Business\Message\MessageReceived;
 use Micro\Plugin\Amqp\Business\Message\MessageReceivedInterface;
 use Micro\Plugin\Amqp\Business\Serializer\MessageSerializerFactoryInterface;
+use Micro\Plugin\Amqp\Event\MessageReceivedEvent;
+use Micro\Plugin\EventEmitter\EventsFacadeInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class ConsumerProcessorProxyBuilder
@@ -14,7 +16,10 @@ class ConsumerProcessorProxyBuilder
     /**
      * @param MessageSerializerFactoryInterface $messageSerializerFactory
      */
-    public function __construct(private MessageSerializerFactoryInterface $messageSerializerFactory)
+    public function __construct(
+        private MessageSerializerFactoryInterface $messageSerializerFactory,
+        private EventsFacadeInterface $eventsFacade
+    )
     {
     }
 
@@ -25,7 +30,10 @@ class ConsumerProcessorProxyBuilder
     public function createProxy(ConsumerProcessorInterface $processor): \Closure
     {
         return function(AMQPMessage $message) use ($processor) {
-            $processor->receive($this->createMessage($message));
+            $receivedMessage = $this->createMessage($message);
+
+            $this->eventsFacade->emit(new MessageReceivedEvent($receivedMessage, $processor->name()));
+            $processor->receive($receivedMessage);
         };
     }
 
@@ -35,7 +43,11 @@ class ConsumerProcessorProxyBuilder
      */
     protected function createMessage(AMQPMessage $amqpMessage): MessageReceivedInterface
     {
-        return new MessageReceived($amqpMessage, $this->deserializeMessageContent($amqpMessage));
+        return new MessageReceived(
+            $amqpMessage,
+            $this->deserializeMessageContent($amqpMessage),
+            $this->eventsFacade
+        );
     }
 
     /**
