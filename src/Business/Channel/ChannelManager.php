@@ -4,7 +4,7 @@ namespace Micro\Plugin\Amqp\Business\Channel;
 
 use Micro\Plugin\Amqp\Business\Connection\ConnectionManagerInterface;
 use PhpAmqpLib\Channel\AMQPChannel;
-use Psr\Log\LoggerInterface;
+
 
 class ChannelManager implements ChannelManagerInterface
 {
@@ -14,11 +14,9 @@ class ChannelManager implements ChannelManagerInterface
     private array $channels;
     /**
      * @param ConnectionManagerInterface $connectionManager
-     * @param LoggerInterface            $logger
      */
     public function __construct(
-    private ConnectionManagerInterface $connectionManager,
-    private LoggerInterface $logger
+        private ConnectionManagerInterface $connectionManager
     ) {
         $this->channels = [];
     }
@@ -38,14 +36,6 @@ class ChannelManager implements ChannelManagerInterface
             ->channel($channelId);
 
         $this->channels[$channelName] = $channel->getChannelId();
-
-        $this->logger->debug(
-            'AMQP: Lookup channel', [
-            'channel_id'    => $channel->getChannelId(),
-            'channel'       => $channelName,
-            'connection'    => $connectionName,
-            ]
-        );
 
         return $channel;
     }

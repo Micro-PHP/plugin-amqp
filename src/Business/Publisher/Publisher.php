@@ -5,6 +5,8 @@ namespace Micro\Plugin\Amqp\Business\Publisher;
 use Micro\Plugin\Amqp\Business\Channel\ChannelManagerInterface;
 use Micro\Plugin\Amqp\Business\Message\MessageInterface;
 use Micro\Plugin\Amqp\Business\Serializer\MessageSerializerFactoryInterface;
+use Micro\Plugin\Amqp\Event\PublishMessageEvent;
+use Micro\Plugin\EventEmitter\EventsFacadeInterface;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -14,11 +16,13 @@ class Publisher implements PublisherInterface
      * @param ChannelManagerInterface $channelManager
      * @param PublisherConfigurationInterface $publisherConfiguration
      * @param MessageSerializerFactoryInterface $messageSerializerFactory
+     * @param EventsFacadeInterface $eventsFacade
      */
     public function __construct(
         private ChannelManagerInterface                 $channelManager,
         private PublisherConfigurationInterface         $publisherConfiguration,
-        private MessageSerializerFactoryInterface       $messageSerializerFactory
+        private MessageSerializerFactoryInterface       $messageSerializerFactory,
+        private EventsFacadeInterface                   $eventsFacade
     ) {}
 
     /**
@@ -32,6 +36,8 @@ class Publisher implements PublisherInterface
             $this->createAmqpMessage($message),
             $this->publisherConfiguration->getExchange()
         );
+
+        $this->eventsFacade->emit(new PublishMessageEvent($message, $this->publisherConfiguration));
     }
 
     /**

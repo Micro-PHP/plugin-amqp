@@ -5,7 +5,7 @@ namespace Micro\Plugin\Amqp\Business\Connection;
 
 use Micro\Plugin\Amqp\AmqpPluginConfiguration;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
-use Psr\Log\LoggerInterface;
+
 
 class ConnectionManager implements ConnectionManagerInterface
 {
@@ -16,8 +16,7 @@ class ConnectionManager implements ConnectionManagerInterface
 
     public function __construct(
     private AmqpPluginConfiguration $configuration,
-    private ConnectionBuilder $connectionBuilder,
-    private LoggerInterface $logger
+    private ConnectionBuilder $connectionBuilder
     ) {
         $this->connections = [];
     }
@@ -41,8 +40,6 @@ class ConnectionManager implements ConnectionManagerInterface
      */
     protected function createConnection(string $connectionName): AMQPStreamConnection
     {
-        $this->logger->debug(sprintf('AMQP: Create connection "%s"', $connectionName));
-
         return $this->connectionBuilder->createConnection(
             $this->configuration->getConnectionConfiguration($connectionName)
         );
@@ -56,7 +53,6 @@ class ConnectionManager implements ConnectionManagerInterface
     public function closeConnection(string $connectionName): void
     {
         $connection = $this->connections[$connectionName];
-        $this->logger->debug(sprintf('AMQP: Close connection "%s"', $connectionName));
         $connection->close();
     }
 
