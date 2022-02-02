@@ -14,6 +14,7 @@ class ConsumerProcessorProxyBuilder
 {
     /**
      * @param MessageSerializerFactoryInterface $messageSerializerFactory
+     * @param EventsFacadeInterface $eventsFacade
      */
     public function __construct(
     private MessageSerializerFactoryInterface $messageSerializerFactory,
@@ -31,7 +32,7 @@ class ConsumerProcessorProxyBuilder
         return function(AMQPMessage $message) use ($processor) {
             $receivedMessage = $this->createMessage($message);
 
-            $this->eventsFacade->emit(new MessageReceivedEvent($receivedMessage, $processor->name()));
+            $this->eventsFacade->emit(new MessageReceivedEvent($receivedMessage));
             $processor->receive($receivedMessage);
         };
     }

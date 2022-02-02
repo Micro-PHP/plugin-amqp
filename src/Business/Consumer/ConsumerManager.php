@@ -2,6 +2,7 @@
 
 namespace Micro\Plugin\Amqp\Business\Consumer;
 
+use Closure;
 use Micro\Plugin\Amqp\AmqpPluginConfiguration;
 use Micro\Plugin\Amqp\Business\Channel\ChannelManagerInterface;
 use Micro\Plugin\Amqp\Business\Serializer\MessageSerializerFactoryInterface;
@@ -13,7 +14,7 @@ use PhpAmqpLib\Channel\AMQPChannel;
 class ConsumerManager implements ConsumerManagerInterface
 {
     /**
-     * @var array<string, ConsumerProcessorInterface>
+     * @var array<string, Closure[]>
      */
     private array $consumerProcessorCollection;
 
@@ -82,10 +83,10 @@ class ConsumerManager implements ConsumerManagerInterface
     /**
      * @param AMQPChannel $channel
      * @param ConsumerConfigurationInterface $configuration
-     * @param \Closure $processor
-     * @return void
+     * @param Closure $processor
+     * @return string
      */
-    protected function appendChannelConsumer(AMQPChannel $channel, ConsumerConfigurationInterface $configuration ,\Closure $processor): string
+    protected function appendChannelConsumer(AMQPChannel $channel, ConsumerConfigurationInterface $configuration , Closure $processor): string
     {
         return $channel->basic_consume(
             $configuration->getQueue(),

@@ -40,17 +40,17 @@ interface ConnectionConfigurationInterface
     public function getPassword(): string;
 
     /**
-     * @return int
+     * @return float
      */
     public function getConnectionTimeout(): float;
 
     /**
-     * @return int
+     * @return float
      */
     public function getReadWriteTimeout(): float;
 
     /**
-     * @return int
+     * @return float
      */
     public function getRpcTimeout(): float;
 

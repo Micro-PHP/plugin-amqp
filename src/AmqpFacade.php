@@ -94,6 +94,6 @@ class AmqpFacade implements AmqpFacadeInterface
      */
     public function deserializeMessage(string $messageContent): MessageInterface
     {
-        $this->messageSerializerFactory->create()->deserialize($messageContent);
+        return $this->messageSerializerFactory->create()->deserialize($messageContent);
     }
 }

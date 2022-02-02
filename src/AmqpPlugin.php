@@ -5,6 +5,7 @@ namespace Micro\Plugin\Amqp;
 use Micro\Component\DependencyInjection\Container;
 use Micro\Component\EventEmitter\EventListenerInterface;
 use Micro\Component\EventEmitter\ListenerProviderInterface;
+use Micro\Framework\Kernel\Configuration\PluginConfigurationInterface;
 use Micro\Framework\Kernel\Plugin\AbstractPlugin;
 use Micro\Kernel\App\Business\ApplicationListenerProviderPluginInterface;
 use Micro\Plugin\Amqp\Business\EventLisneter\ListenerProvider;
@@ -19,12 +20,15 @@ use Micro\Plugin\EventEmitter\EventsFacadeInterface;
 use Micro\Plugin\Serializer\SerializerFacadeInterface;
 use Symfony\Component\Console\Command\Command;
 
+/**
+ * @method AmqpPluginConfiguration configuration()
+ */
 class AmqpPlugin extends AbstractPlugin implements ApplicationListenerProviderPluginInterface, CommandProviderInterface
 {
     /**
-     * @var Container
+     * @var Container|null
      */
-    private Container $container;
+    private ?Container $container = null;
 
     /**
      * {@inheritDoc}
@@ -35,7 +39,7 @@ class AmqpPlugin extends AbstractPlugin implements ApplicationListenerProviderPl
 
         $container->register(
             AmqpFacadeInterface::class, function (Container $container) {
-                return $this->createAmqpFacade($container);
+                return $this->createAmqpFacade();
             }
         );
     }
@@ -57,7 +61,7 @@ class AmqpPlugin extends AbstractPlugin implements ApplicationListenerProviderPl
      */
     protected function createCommandListConsumer(): Command
     {
-        return new ConsumerListCommand($this->configuration);
+        return new ConsumerListCommand($this->configuration());
     }
 
     /**
@@ -65,7 +69,7 @@ class AmqpPlugin extends AbstractPlugin implements ApplicationListenerProviderPl
      */
     protected function createCommandListPublisher(): Command
     {
-        return new PublisherListCommand($this->configuration);
+        return new PublisherListCommand($this->configuration());
     }
 
     /**
@@ -95,10 +99,9 @@ class AmqpPlugin extends AbstractPlugin implements ApplicationListenerProviderPl
     }
 
     /**
-     * @param Container $container
      * @return AmqpFacadeInterface
      */
-    protected function createAmqpFacade(Container $container): AmqpFacadeInterface
+    protected function createAmqpFacade(): AmqpFacadeInterface
     {
         return new AmqpFacade(
             $this->createPluginComponentBuilder(),
@@ -112,7 +115,7 @@ class AmqpPlugin extends AbstractPlugin implements ApplicationListenerProviderPl
     protected function createPluginComponentBuilder(): PluginComponentBuilderInterface
     {
         return new PluginComponentBuilder(
-            $this->configuration,
+            $this->configuration(),
             $this->createMessageSerializerFactory(),
             $this->lookupEventsFacade()
         );

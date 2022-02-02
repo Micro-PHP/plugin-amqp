@@ -13,9 +13,7 @@ class ConsumerListCommand extends Command
     protected static $defaultName = 'micro:amqp:consumer:list';
     protected const HELP          = 'This command show all registered consumers whti settings.';
 
-    /**
-     * @param AmqpPluginConfiguration $pluginConfiguration
-     */
+
     public function __construct(private AmqpPluginConfiguration $pluginConfiguration)
     {
         parent::__construct(self::$defaultName);

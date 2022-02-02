@@ -26,13 +26,12 @@ class AmqpPluginConfiguration extends PluginConfiguration
     private const CFG_CHANNEL_LIST          = 'AMQP_CHANNEL_LIST';
     private const CFG_PUBLISHER_LIST        = 'AMQP_PUBLISHER_LIST';
     private const CFG_CONSUMER_LIST         = 'AMQP_CONSUMER_LIST';
-
-    public const CONSUMER_DEFAULT   = 'default';
-    public const EXCHANGE_DEFAULT   = 'default';
-    public const QUEUE_DEFAULT      = 'default';
-    public const CHANNEL_DEFAULT    = 'default';
-    public const CONNECTION_DEFAULT = 'default';
-    public const PUBLISHER_DEFAULT  = 'default';
+    public const CONSUMER_DEFAULT           = 'default';
+    public const EXCHANGE_DEFAULT           = 'default';
+    public const QUEUE_DEFAULT              = 'default';
+    public const CHANNEL_DEFAULT            = 'default';
+    public const CONNECTION_DEFAULT         = 'default';
+    public const PUBLISHER_DEFAULT          = 'default';
 
     /**
      * @return string[]
@@ -194,10 +193,10 @@ class AmqpPluginConfiguration extends PluginConfiguration
 
     /**
      * @param  string $message
-     * @param  ...$arguments
+     * @param  string|int|float ...$arguments
      * @return void
      */
-    protected function throwInvalidArgumentException(string $message, ...$arguments)
+    protected function throwInvalidArgumentException(string $message, string|int|float ...$arguments)
     {
         throw new InvalidConfigurationException(
             sprintf($message, ...$arguments)
