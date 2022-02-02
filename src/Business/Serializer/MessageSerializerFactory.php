@@ -9,7 +9,9 @@ class MessageSerializerFactory implements MessageSerializerFactoryInterface
     /**
      * @param SerializerFacadeInterface $serializerFacade
      */
-    public function __construct(private SerializerFacadeInterface $serializerFacade) {}
+    public function __construct(private SerializerFacadeInterface $serializerFacade)
+    {
+    }
 
     /**
      * {@inheritDoc}

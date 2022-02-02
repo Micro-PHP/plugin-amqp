@@ -2,7 +2,6 @@
 
 namespace Micro\Plugin\Amqp\Business\Consumer;
 
-
 use Micro\Plugin\Amqp\Business\Message\MessageInterface;
 use Micro\Plugin\Amqp\Business\Message\MessageReceived;
 use Micro\Plugin\Amqp\Business\Message\MessageReceivedInterface;
@@ -17,8 +16,8 @@ class ConsumerProcessorProxyBuilder
      * @param MessageSerializerFactoryInterface $messageSerializerFactory
      */
     public function __construct(
-        private MessageSerializerFactoryInterface $messageSerializerFactory,
-        private EventsFacadeInterface $eventsFacade
+    private MessageSerializerFactoryInterface $messageSerializerFactory,
+    private EventsFacadeInterface $eventsFacade
     )
     {
     }

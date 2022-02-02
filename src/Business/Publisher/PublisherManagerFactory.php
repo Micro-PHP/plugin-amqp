@@ -9,9 +9,11 @@ class PublisherManagerFactory implements PublisherManagerFactoryInterface
 {
 
     public function __construct(
-        private ChannelManagerInterface $channelManager,
-        private AmqpPluginConfiguration $pluginConfiguration
-    ) {}
+    private ChannelManagerInterface $channelManager,
+    private AmqpPluginConfiguration $pluginConfiguration
+    )
+    {
+    }
 
     public function create(): PublisherManagerInterface
     {

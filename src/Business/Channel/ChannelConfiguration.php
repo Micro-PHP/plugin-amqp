@@ -7,12 +7,12 @@ use Micro\Plugin\Amqp\AmqpPluginConfiguration;
 
 class ChannelConfiguration extends AbstractAmqpComponentConfiguration implements ChannelConfigurationInterface
 {
-    private const CFG_BINDINGS = 'AMQP_CHANNEL_%s_BINDINGS';
-    private const BINDINGS_DEFAULT =    AmqpPluginConfiguration::QUEUE_DEFAULT . ':' .
+    private const CFG_BINDINGS             = 'AMQP_CHANNEL_%s_BINDINGS';
+    private const BINDINGS_DEFAULT         =    AmqpPluginConfiguration::QUEUE_DEFAULT . ':' .
                                         AmqpPluginConfiguration::EXCHANGE_DEFAULT . ':' .
                                         AmqpPluginConfiguration::CONNECTION_DEFAULT;
-    private const LIST_QUEUE_POSITION = 0;
-    private const LIST_EXCHANGE_POSITION = 1;
+    private const LIST_QUEUE_POSITION      = 0;
+    private const LIST_EXCHANGE_POSITION   = 1;
     private const LIST_CONNECTION_POSITION = 2;
 
     /**
@@ -40,7 +40,7 @@ class ChannelConfiguration extends AbstractAmqpComponentConfiguration implements
     private function createBindingsFromSource(string $bindingsSource): array
     {
         $bindingsArray = array_map('trim', explode(',', $bindingsSource));
-        $bindings = [];
+        $bindings      = [];
         foreach ($bindingsArray as $sourceBinding) {
             $bindings[] = $this->createBindingObject($sourceBinding);
         }

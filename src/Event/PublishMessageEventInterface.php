@@ -2,7 +2,6 @@
 
 namespace Micro\Plugin\Amqp\Event;
 
-
 interface PublishMessageEventInterface extends MessageActionEventInterface
 {
     /**

@@ -2,7 +2,6 @@
 
 namespace Micro\Plugin\Amqp\Event;
 
-
 use Micro\Component\EventEmitter\EventInterface;
 use Micro\Plugin\Amqp\Business\Message\MessageReceivedInterface;
 

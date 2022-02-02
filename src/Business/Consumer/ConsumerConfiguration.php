@@ -8,14 +8,14 @@ use Micro\Plugin\Amqp\AmqpPluginConfiguration;
 class ConsumerConfiguration extends AbstractAmqpComponentConfiguration implements ConsumerConfigurationInterface
 {
 
-    private const CFG_TAG = 'AMQP_CONSUMER_%s_TAG';
-    private const CFG_CHANNEL = 'AMQP_CONSUMER_%s_CHANNEL';
+    private const CFG_TAG        = 'AMQP_CONSUMER_%s_TAG';
+    private const CFG_CHANNEL    = 'AMQP_CONSUMER_%s_CHANNEL';
     private const CFG_CONNECTION = 'AMQP_CONSUMER_%s_CONNECTION';
-    private const CFG_QUEUE = 'AMQP_CONSUMER_%s_QUEUE';
-    private const CFG_NO_WAIT = 'AMQP_CONSUMER_%s_NO_WAIT';
-    private const CFG_EXCLUSIVE = 'AMQP_CONSUMER_%s_EXCLUSIVE';
-    private const CFG_NO_ACK = 'AMQP_CONSUMER_%s_NO_ACK';
-    private const CFG_NO_LOCAL = 'AMQP_CONSUMER_%s_NO_LOCAL';
+    private const CFG_QUEUE      = 'AMQP_CONSUMER_%s_QUEUE';
+    private const CFG_NO_WAIT    = 'AMQP_CONSUMER_%s_NO_WAIT';
+    private const CFG_EXCLUSIVE  = 'AMQP_CONSUMER_%s_EXCLUSIVE';
+    private const CFG_NO_ACK     = 'AMQP_CONSUMER_%s_NO_ACK';
+    private const CFG_NO_LOCAL   = 'AMQP_CONSUMER_%s_NO_LOCAL';
 
 
 

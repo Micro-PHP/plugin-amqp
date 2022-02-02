@@ -2,7 +2,6 @@
 
 namespace Micro\Plugin\Amqp;
 
-
 use Micro\Plugin\Amqp\Business\Channel\ChannelManager;
 use Micro\Plugin\Amqp\Business\Channel\ChannelManagerInterface;
 use Micro\Plugin\Amqp\Business\Connection\ConnectionBuilder;
@@ -20,7 +19,6 @@ use Micro\Plugin\Amqp\Business\Queue\QueueManager;
 use Micro\Plugin\Amqp\Business\Queue\QueueManagerInterface;
 use Micro\Plugin\Amqp\Business\Serializer\MessageSerializerFactoryInterface;
 use Micro\Plugin\EventEmitter\EventsFacadeInterface;
-
 
 class PluginComponentBuilder implements PluginComponentBuilderInterface
 {
@@ -55,15 +53,16 @@ class PluginComponentBuilder implements PluginComponentBuilderInterface
      * @param EventsFacadeInterface $eventsFacade
      */
     public function __construct(
-        private AmqpPluginConfiguration $configuration,
-        private MessageSerializerFactoryInterface $messageSerializerFactory,
-        private EventsFacadeInterface $eventsFacade
-    ) {
-        $this->initialized = false;
+    private AmqpPluginConfiguration $configuration,
+    private MessageSerializerFactoryInterface $messageSerializerFactory,
+    private EventsFacadeInterface $eventsFacade
+    )
+    {
+        $this->initialized       = false;
         $this->connectionManager = new ConnectionManager($this->configuration, new ConnectionBuilder());
-        $this->channelManager = new ChannelManager($this->connectionManager);
-        $this->queueManager = new QueueManager($this->channelManager, $this->configuration);
-        $this->exchangeManager = new ExchangeManager($this->channelManager, $this->configuration);
+        $this->channelManager    = new ChannelManager($this->connectionManager);
+        $this->queueManager      = new QueueManager($this->channelManager, $this->configuration);
+        $this->exchangeManager   = new ExchangeManager($this->channelManager, $this->configuration);
     }
 
     /**

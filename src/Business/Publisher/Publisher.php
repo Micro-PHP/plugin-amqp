@@ -19,11 +19,13 @@ class Publisher implements PublisherInterface
      * @param EventsFacadeInterface $eventsFacade
      */
     public function __construct(
-        private ChannelManagerInterface                 $channelManager,
-        private PublisherConfigurationInterface         $publisherConfiguration,
-        private MessageSerializerFactoryInterface       $messageSerializerFactory,
-        private EventsFacadeInterface                   $eventsFacade
-    ) {}
+    private ChannelManagerInterface                 $channelManager,
+    private PublisherConfigurationInterface         $publisherConfiguration,
+    private MessageSerializerFactoryInterface       $messageSerializerFactory,
+    private EventsFacadeInterface                   $eventsFacade
+    )
+    {
+    }
 
     /**
      * @param  MessageInterface $message

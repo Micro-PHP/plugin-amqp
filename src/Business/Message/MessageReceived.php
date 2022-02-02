@@ -2,7 +2,6 @@
 
 namespace Micro\Plugin\Amqp\Business\Message;
 
-
 use Micro\Plugin\Amqp\Event\AckMessageEvent;
 use Micro\Plugin\Amqp\Event\NackMessageEvent;
 use Micro\Plugin\EventEmitter\EventsFacadeInterface;
@@ -16,9 +15,9 @@ class MessageReceived implements MessageReceivedInterface
      * @param EventsFacadeInterface $eventsFacade
      */
     public function __construct(
-        private AMQPMessage $source,
-        private MessageInterface $message,
-        private EventsFacadeInterface $eventsFacade
+    private AMQPMessage $source,
+    private MessageInterface $message,
+    private EventsFacadeInterface $eventsFacade
     )
     {
     }

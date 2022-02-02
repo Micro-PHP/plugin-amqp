@@ -7,7 +7,6 @@ use Micro\Plugin\Amqp\Business\Channel\ChannelManagerInterface;
 use Micro\Plugin\Amqp\Business\Serializer\MessageSerializerFactoryInterface;
 use Micro\Plugin\EventEmitter\EventsFacadeInterface;
 
-
 class PublisherFactory implements PublisherFactoryInterface
 {
     /**
@@ -17,11 +16,13 @@ class PublisherFactory implements PublisherFactoryInterface
      * @param EventsFacadeInterface $eventsFacade
      */
     public function __construct(
-        private ChannelManagerInterface $channelManager,
-        private AmqpPluginConfiguration $pluginConfiguration,
-        private MessageSerializerFactoryInterface $messageSerializerFactory,
-        private EventsFacadeInterface $eventsFacade
-    ) {}
+    private ChannelManagerInterface $channelManager,
+    private AmqpPluginConfiguration $pluginConfiguration,
+    private MessageSerializerFactoryInterface $messageSerializerFactory,
+    private EventsFacadeInterface $eventsFacade
+    )
+    {
+    }
 
     /**
      * {@inheritDoc}
