@@ -16,7 +16,6 @@ class ConsumeCommand extends Command
     protected const HELP          = 'This command run consumer. ';
 
     /**
-     * @param string|null $name
      * @param AmqpFacadeInterface $amqpFacade
      */
     public function __construct(private AmqpFacadeInterface $amqpFacade)

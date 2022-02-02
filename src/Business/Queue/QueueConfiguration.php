@@ -60,7 +60,7 @@ class QueueConfiguration extends AbstractAmqpComponentConfiguration implements Q
     {
         $connectionListSource = $this->get(self::CFG_CONNECTION_LIST, AmqpPluginConfiguration::CONNECTION_DEFAULT);
 
-        return $this->explodeSource($connectionListSource);
+        return $this->explodeStringToArray($connectionListSource);
     }
 
     /**
@@ -70,16 +70,6 @@ class QueueConfiguration extends AbstractAmqpComponentConfiguration implements Q
     {
         $channelList = $this->get(self::CFG_CONNECTION_LIST, AmqpPluginConfiguration::CHANNEL_DEFAULT);
 
-        return $this->explodeSource($channelList);
-    }
-
-    /**
-     * @param  string $source
-     * @param  string $separator
-     * @return string[]
-     */
-    protected function explodeSource(string $source, string $separator = ','): array
-    {
-        return array_map('trim', explode($separator, $source));
+        return $this->explodeStringToArray($channelList);
     }
 }

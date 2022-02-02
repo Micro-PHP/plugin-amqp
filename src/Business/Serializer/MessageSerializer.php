@@ -3,6 +3,7 @@
 namespace Micro\Plugin\Amqp\Business\Serializer;
 
 use Micro\Plugin\Amqp\Business\Message\MessageInterface;
+use Micro\Plugin\Amqp\Exception\InvalidSerializedMessageClassDataException;
 use Micro\Plugin\Serializer\Business\MessageSerialized;
 use Micro\Plugin\Serializer\SerializerFacadeInterface;
 
@@ -35,11 +36,17 @@ class MessageSerializer implements MessageSerializerInterface
          */
         $messageSerializedObject = $this->serializerFacade->deserialize($content, MessageSerialized::class, self::FORMAT);
 
-        return $this->serializerFacade->deserialize(
+        $message =  $this->serializerFacade->deserialize(
             $messageSerializedObject->getSource(),
             $messageSerializedObject->getClassName(),
             self::FORMAT
         );
+
+        if($message instanceof MessageInterface) {
+            return $message;
+        }
+
+        throw new InvalidSerializedMessageClassDataException($messageSerializedObject->getSource());
     }
 
     /**

@@ -14,7 +14,6 @@ class ExchangeConfiguration extends AbstractAmqpComponentConfiguration implement
     private const CFG_IS_AUTO_DELETE = 'AMQP_EXCHANGE_%s_AUTO_DELETE';
     private const CFG_IS_INTERNAL    = 'AMQP_EXCHANGE_%s_INTERNAL';
     private const CFG_IS_NO_WAIT     = 'AMQP_EXCHANGE_%s_NO_WAIT';
-    private const CFG_ARGUMENTS      ='AMQP_EXCHANGE_%s_ARGUMENTS';
     private const CFG_TICKET         ='AMQP_EXCHANGE_%s_TICKET';
     private const CFG_CHANNELS       = 'AMQP_EXCHANGE_%s_CHANNELS';
     private const CFG_CONNECTIONS    = 'AMQP_EXCHANGE_%s_CONNECTIONS';
@@ -96,7 +95,7 @@ class ExchangeConfiguration extends AbstractAmqpComponentConfiguration implement
     {
         $connectionList = $this->get(self::CFG_CONNECTIONS, AmqpPluginConfiguration::CONNECTION_DEFAULT);
 
-        return $this->explodeSource($connectionList);
+        return $this->explodeStringToArray($connectionList);
     }
 
     /**
@@ -106,16 +105,6 @@ class ExchangeConfiguration extends AbstractAmqpComponentConfiguration implement
     {
         $channelList = $this->get(self::CFG_CHANNELS, AmqpPluginConfiguration::CHANNEL_DEFAULT);
 
-        return $this->explodeSource($channelList);
-    }
-
-    /**
-     * @param  string $source
-     * @param  string $separator
-     * @return string[]
-     */
-    protected function explodeSource(string $source, string $separator = ','): array
-    {
-        return array_map('trim', explode($separator, $source));
+        return $this->explodeStringToArray($channelList);
     }
 }

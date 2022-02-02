@@ -5,9 +5,9 @@ namespace Micro\Plugin\Amqp\Event;
 abstract class AbstractConsumerEvent implements ConsumerEventInterface
 {
     /**
-     * @param $consumerName
+     * @param string $consumerName
      */
-    public function __construct(private $consumerName)
+    public function __construct(private string $consumerName)
     {
     }
 

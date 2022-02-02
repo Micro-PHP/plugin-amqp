@@ -20,27 +20,30 @@ use Micro\Plugin\Amqp\Business\Queue\QueueManagerInterface;
 use Micro\Plugin\Amqp\Business\Serializer\MessageSerializerFactoryInterface;
 use Micro\Plugin\EventEmitter\EventsFacadeInterface;
 
+/**
+ * @TODO: Need to be refactoring
+ */
 class PluginComponentBuilder implements PluginComponentBuilderInterface
 {
     /**
-     * @var ConnectionManagerInterface
+     * @var ConnectionManagerInterface|null
      */
-    protected ConnectionManagerInterface $connectionManager;
+    protected ?ConnectionManagerInterface $connectionManager;
 
     /**
-     * @var ChannelManagerInterface
+     * @var ChannelManagerInterface|null
      */
-    protected ChannelManagerInterface $channelManager;
+    protected ?ChannelManagerInterface $channelManager;
 
     /**
-     * @var ExchangeManagerInterface
+     * @var ExchangeManagerInterface|null
      */
-    protected ExchangeManagerInterface $exchangeManager;
+    protected ?ExchangeManagerInterface $exchangeManager;
 
     /**
-     * @var QueueManagerInterface
+     * @var QueueManager
      */
-    protected QueueManagerInterface $queueManager;
+    protected QueueManager $queueManager;
 
     /**
      * @var bool
@@ -58,7 +61,8 @@ class PluginComponentBuilder implements PluginComponentBuilderInterface
     private EventsFacadeInterface $eventsFacade
     )
     {
-        $this->initialized       = false;
+        $this->initialized = false;
+        // TODO: Factory for each manager
         $this->connectionManager = new ConnectionManager($this->configuration, new ConnectionBuilder());
         $this->channelManager    = new ChannelManager($this->connectionManager);
         $this->queueManager      = new QueueManager($this->channelManager, $this->configuration);

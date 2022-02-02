@@ -47,7 +47,7 @@ class PublisherConfiguration extends AbstractAmqpComponentConfiguration implemen
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getDeliveryMode(): int
     {
