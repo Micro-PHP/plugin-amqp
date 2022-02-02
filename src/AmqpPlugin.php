@@ -16,7 +16,6 @@ use Micro\Plugin\Amqp\Console\ConsumerListCommand;
 use Micro\Plugin\Amqp\Console\PublisherListCommand;
 use Micro\Plugin\Console\CommandProviderInterface;
 use Micro\Plugin\EventEmitter\EventsFacadeInterface;
-use Micro\Plugin\Logger\LoggerFacadeInterface;
 use Micro\Plugin\Serializer\SerializerFacadeInterface;
 use Symfony\Component\Console\Command\Command;
 

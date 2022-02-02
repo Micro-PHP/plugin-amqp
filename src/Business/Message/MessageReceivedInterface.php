@@ -2,8 +2,6 @@
 
 namespace Micro\Plugin\Amqp\Business\Message;
 
-use PhpAmqpLib\Message\AMQPMessage;
-
 interface MessageReceivedInterface
 {
     /**
