@@ -13,7 +13,7 @@ class PublishMessageEvent extends AbstractActionMessageEvent implements PublishM
      */
     public function __construct(
         MessageInterface $message,
-        private PublisherConfigurationInterface $publisherConfiguration
+    private PublisherConfigurationInterface $publisherConfiguration
     )
     {
         parent::__construct($message);

@@ -2,8 +2,6 @@
 
 namespace Micro\Plugin\Amqp\Business\Consumer;
 
-
-
 use Micro\Plugin\Amqp\Business\Message\MessageReceivedInterface;
 
 interface ConsumerProcessorInterface

@@ -12,8 +12,8 @@ class ExchangeManager implements ExchangeManagerInterface
      * @param AmqpPluginConfiguration $pluginConfiguration
      */
     public function __construct(
-        private ChannelManagerInterface $channelManager,
-        private AmqpPluginConfiguration $pluginConfiguration
+    private ChannelManagerInterface $channelManager,
+    private AmqpPluginConfiguration $pluginConfiguration
     )
     {
     }
@@ -23,7 +23,7 @@ class ExchangeManager implements ExchangeManagerInterface
      */
     public function exchangeDeclare(string $connectionName, string $exchangeName, string $channelName = null): void
     {
-        $channel = $this->channelManager->getChannel($channelName, $connectionName);
+        $channel       = $this->channelManager->getChannel($channelName, $connectionName);
         $configuration = $this->pluginConfiguration->getExchangeConfiguration($exchangeName);
 
         $channel->exchange_declare(

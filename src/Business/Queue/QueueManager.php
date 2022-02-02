@@ -5,7 +5,6 @@ namespace Micro\Plugin\Amqp\Business\Queue;
 use Micro\Plugin\Amqp\AmqpPluginConfiguration;
 use Micro\Plugin\Amqp\Business\Channel\ChannelManagerInterface;
 
-
 class QueueManager implements QueueManagerInterface
 {
     /**
@@ -13,9 +12,11 @@ class QueueManager implements QueueManagerInterface
      * @param AmqpPluginConfiguration $pluginConfiguration
      */
     public function __construct(
-        private ChannelManagerInterface $channelManager,
-        private AmqpPluginConfiguration $pluginConfiguration
-    ) {}
+    private ChannelManagerInterface $channelManager,
+    private AmqpPluginConfiguration $pluginConfiguration
+    )
+    {
+    }
 
     /**
      * {@inheritDoc}
@@ -23,7 +24,7 @@ class QueueManager implements QueueManagerInterface
     public function queueDeclare(string $connectionName, string $queueName, string $channelName = null): void
     {
         $queueConfiguration = $this->pluginConfiguration->getQueueConfiguration($queueName);
-        $channel = $this->channelManager->getChannel($channelName, $connectionName);
+        $channel            = $this->channelManager->getChannel($channelName, $connectionName);
         $channel->queue_declare(
             $queueConfiguration->getName(),
             $queueConfiguration->isPassive(),
@@ -44,7 +45,7 @@ class QueueManager implements QueueManagerInterface
 
         foreach ($queueList as $queueName) {
             $queueConfiguration = $this->pluginConfiguration->getQueueConfiguration($queueName);
-            $connectionList = $queueConfiguration->getConnectionList();
+            $connectionList     = $queueConfiguration->getConnectionList();
 
             foreach ($connectionList as $connectionName) {
                 $channelList = $queueConfiguration->getChannelList();
@@ -75,7 +76,7 @@ class QueueManager implements QueueManagerInterface
     protected function channelBind(string $channelName): void
     {
         $configuration = $this->pluginConfiguration->getChannelConfiguration($channelName);
-        $bindings = $configuration->getBindings();
+        $bindings      = $configuration->getBindings();
 
         foreach ($bindings as $binding) {
             $channel = $this->channelManager->getChannel(

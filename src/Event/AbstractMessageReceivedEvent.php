@@ -11,7 +11,7 @@ abstract class AbstractMessageReceivedEvent implements EventInterface
      * @param MessageReceivedInterface $messageReceived
      */
     public function __construct(
-        private MessageReceivedInterface $messageReceived
+    private MessageReceivedInterface $messageReceived
     )
     {
     }

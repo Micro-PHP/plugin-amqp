@@ -21,18 +21,18 @@ use Micro\Plugin\Amqp\Business\Queue\QueueConfigurationInterface;
 class AmqpPluginConfiguration extends PluginConfiguration
 {
     private const CFG_CONNECTION_NAMES_LIST = 'AMQP_CONNECTION_LIST';
-    private const CFG_QUEUE_LIST = 'AMQP_QUEUE_LIST';
-    private const CFG_EXCHANGE_LIST = 'AMQP_EXCHANGE_LIST';
-    private const CFG_CHANNEL_LIST = 'AMQP_CHANNEL_LIST';
-    private const CFG_PUBLISHER_LIST = 'AMQP_PUBLISHER_LIST';
-    private const CFG_CONSUMER_LIST = 'AMQP_CONSUMER_LIST';
+    private const CFG_QUEUE_LIST            = 'AMQP_QUEUE_LIST';
+    private const CFG_EXCHANGE_LIST         = 'AMQP_EXCHANGE_LIST';
+    private const CFG_CHANNEL_LIST          = 'AMQP_CHANNEL_LIST';
+    private const CFG_PUBLISHER_LIST        = 'AMQP_PUBLISHER_LIST';
+    private const CFG_CONSUMER_LIST         = 'AMQP_CONSUMER_LIST';
 
-    public const CONSUMER_DEFAULT = 'default';
-    public const EXCHANGE_DEFAULT = 'default';
-    public const QUEUE_DEFAULT = 'default';
-    public const CHANNEL_DEFAULT = 'default';
+    public const CONSUMER_DEFAULT   = 'default';
+    public const EXCHANGE_DEFAULT   = 'default';
+    public const QUEUE_DEFAULT      = 'default';
+    public const CHANNEL_DEFAULT    = 'default';
     public const CONNECTION_DEFAULT = 'default';
-    public const PUBLISHER_DEFAULT = 'default';
+    public const PUBLISHER_DEFAULT  = 'default';
 
     /**
      * @return string[]
@@ -203,5 +203,4 @@ class AmqpPluginConfiguration extends PluginConfiguration
             sprintf($message, ...$arguments)
         );
     }
-
 }

@@ -5,7 +5,6 @@ namespace Micro\Plugin\Amqp\Business\Channel;
 use Micro\Plugin\Amqp\Business\Connection\ConnectionManagerInterface;
 use PhpAmqpLib\Channel\AMQPChannel;
 
-
 class ChannelManager implements ChannelManagerInterface
 {
     /**
@@ -16,8 +15,9 @@ class ChannelManager implements ChannelManagerInterface
      * @param ConnectionManagerInterface $connectionManager
      */
     public function __construct(
-        private ConnectionManagerInterface $connectionManager
-    ) {
+    private ConnectionManagerInterface $connectionManager
+    )
+    {
         $this->channels = [];
     }
 

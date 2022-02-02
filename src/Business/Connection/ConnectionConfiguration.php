@@ -2,29 +2,27 @@
 
 namespace Micro\Plugin\Amqp\Business\Connection;
 
-
 use Micro\Plugin\Amqp\AbstractAmqpComponentConfiguration;
-
 
 class ConnectionConfiguration extends AbstractAmqpComponentConfiguration implements ConnectionConfigurationInterface
 {
-    private const CFG_HOST = 'AMQP_CONNECTION_%s_HOST';
-    private const CFG_PORT = 'AMQP_CONNECTION_%s_PORT';
-    private const CFG_LOGIN = 'AMQP_CONNECTION_%sLOGIN';
-    private const CFG_PASSWORD = 'AMQP_CONNECTION_%s_PASSWORD';
-    private const CFG_TIMEOUT_READ = 'AMQP_CONNECTION_%s_TIMEOUT_READ';
+    private const CFG_HOST          = 'AMQP_CONNECTION_%s_HOST';
+    private const CFG_PORT          = 'AMQP_CONNECTION_%s_PORT';
+    private const CFG_LOGIN         = 'AMQP_CONNECTION_%sLOGIN';
+    private const CFG_PASSWORD      = 'AMQP_CONNECTION_%s_PASSWORD';
+    private const CFG_TIMEOUT_READ  = 'AMQP_CONNECTION_%s_TIMEOUT_READ';
     private const CFG_TIMEOUT_WRITE = 'AMQP_CONNECTION_%s_TIMEOUT_WRITE';
-    private const CFG_TIMEOUT_RPC = 'AMQP_CONNECTION_%s_TIMEOUT_RPC';
-    private const CFG_SASL_METHOD = 'AMQP_CONNECTION_%s_SASL_METHOD';
-    private const CFG_CA_CERT = 'AMQP_CONNECTION_%s_CA_CERT';
-    private const CFG_CERT = 'AMQP_CONNECTION_%s_CERT';
-    private const CFG_KEY = 'AMQP_CONNECTION_%s_KEY';
-    private const CFG_VERIFY = 'AMQP_CONNECTION_%s_VERIFY';
-    private const CFG_VIRTUAL_HOST = 'AMQP_CONNECTION_%s_VHOST';
-    private const CFG_LOCALE = 'AMQP_CONNECTION_%s_LOCALE';
-    private const CFG_KEEPALIVE = 'AMQP_CONNECTION_%s_KEEPALIVE';
-    private const CFG_SSL_ENABLED = 'AMQP_CONNECTION_%s_SSL_ENABLED';
-    private const CFG_SSL_PROTOCOL = 'AMQP_CONNECTION_%s_SSL_PROTOCOL';
+    private const CFG_TIMEOUT_RPC   = 'AMQP_CONNECTION_%s_TIMEOUT_RPC';
+    private const CFG_SASL_METHOD   = 'AMQP_CONNECTION_%s_SASL_METHOD';
+    private const CFG_CA_CERT       = 'AMQP_CONNECTION_%s_CA_CERT';
+    private const CFG_CERT          = 'AMQP_CONNECTION_%s_CERT';
+    private const CFG_KEY           = 'AMQP_CONNECTION_%s_KEY';
+    private const CFG_VERIFY        = 'AMQP_CONNECTION_%s_VERIFY';
+    private const CFG_VIRTUAL_HOST  = 'AMQP_CONNECTION_%s_VHOST';
+    private const CFG_LOCALE        = 'AMQP_CONNECTION_%s_LOCALE';
+    private const CFG_KEEPALIVE     = 'AMQP_CONNECTION_%s_KEEPALIVE';
+    private const CFG_SSL_ENABLED   = 'AMQP_CONNECTION_%s_SSL_ENABLED';
+    private const CFG_SSL_PROTOCOL  = 'AMQP_CONNECTION_%s_SSL_PROTOCOL';
 
     /**
      * {@inheritDoc}
@@ -69,7 +67,7 @@ class ConnectionConfiguration extends AbstractAmqpComponentConfiguration impleme
     /**
      * {@inheritDoc}
      */
-    public function getCOnnectionTimeout(): float
+    public function getConnectionTimeout(): float
     {
         return (float)$this->get(self::CFG_TIMEOUT_READ);
     }

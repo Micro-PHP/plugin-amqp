@@ -20,7 +20,6 @@ use Micro\Plugin\Logger\LoggerFacadeInterface;
 use Micro\Plugin\Serializer\SerializerFacadeInterface;
 use Symfony\Component\Console\Command\Command;
 
-
 class AmqpPlugin extends AbstractPlugin implements ApplicationListenerProviderPluginInterface, CommandProviderInterface
 {
     /**

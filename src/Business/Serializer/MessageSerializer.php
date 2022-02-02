@@ -13,7 +13,9 @@ class MessageSerializer implements MessageSerializerInterface
     /**
      * @param SerializerFacadeInterface $serializerFacade
      */
-    public function __construct(private SerializerFacadeInterface $serializerFacade) {}
+    public function __construct(private SerializerFacadeInterface $serializerFacade)
+    {
+    }
 
     /**
      * {@inheritDoc}

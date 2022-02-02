@@ -24,11 +24,11 @@ class AmqpFacade implements AmqpFacadeInterface
      * @param PluginComponentBuilderInterface $pluginComponentBuilder
      */
     public function __construct(
-        private PluginComponentBuilderInterface $pluginComponentBuilder,
-        private MessageSerializerFactoryInterface $messageSerializerFactory
+    private PluginComponentBuilderInterface $pluginComponentBuilder,
+    private MessageSerializerFactoryInterface $messageSerializerFactory
     )
     {
-        $this->consumerManager = $this->pluginComponentBuilder->createConsumerManager();
+        $this->consumerManager  = $this->pluginComponentBuilder->createConsumerManager();
         $this->publisherManager = $this->pluginComponentBuilder->createMessagePublisherManager();
     }
 

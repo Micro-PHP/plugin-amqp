@@ -2,7 +2,6 @@
 
 namespace Micro\Plugin\Amqp\Console;
 
-
 use Micro\Plugin\Amqp\AmqpPluginConfiguration;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -12,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ConsumerListCommand extends Command
 {
     protected static $defaultName = 'micro:amqp:consumer:list';
-    protected const HELP = 'This command show all registered consumers whti settings.';
+    protected const HELP          = 'This command show all registered consumers whti settings.';
 
     /**
      * @param AmqpPluginConfiguration $pluginConfiguration

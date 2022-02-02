@@ -12,8 +12,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ConsumeCommand extends Command
 {
     protected static $defaultName = 'micro:amqp:consume';
-    protected const ARG_CONSUMER = 'consumer';
-    protected const HELP = 'This command run consumer. ';
+    protected const ARG_CONSUMER  = 'consumer';
+    protected const HELP          = 'This command run consumer. ';
 
     /**
      * @param string|null $name

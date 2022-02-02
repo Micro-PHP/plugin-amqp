@@ -2,7 +2,6 @@
 
 namespace Micro\Plugin\Amqp\Business\Publisher;
 
-
 interface PublisherConfigurationInterface
 {
     /**

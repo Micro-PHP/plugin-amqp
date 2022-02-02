@@ -2,10 +2,8 @@
 
 namespace Micro\Plugin\Amqp\Business\Connection;
 
-
 use Micro\Plugin\Amqp\AmqpPluginConfiguration;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
-
 
 class ConnectionManager implements ConnectionManagerInterface
 {
@@ -17,7 +15,8 @@ class ConnectionManager implements ConnectionManagerInterface
     public function __construct(
     private AmqpPluginConfiguration $configuration,
     private ConnectionBuilder $connectionBuilder
-    ) {
+    )
+    {
         $this->connections = [];
     }
 

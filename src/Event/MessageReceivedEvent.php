@@ -2,7 +2,6 @@
 
 namespace Micro\Plugin\Amqp\Event;
 
-
 class MessageReceivedEvent extends AbstractMessageReceivedEvent implements MessageReceivedEventInterface
 {
 }

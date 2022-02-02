@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class PublisherListCommand extends Command
 {
     protected static $defaultName = 'micro:amqp:publisher:list';
-    protected const HELP = 'This command show all registered publishers with settings.';
+    protected const HELP          = 'This command show all registered publishers with settings.';
 
     /**
      * @param AmqpPluginConfiguration $pluginConfiguration

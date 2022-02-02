@@ -24,10 +24,10 @@ class ConsumerManager implements ConsumerManagerInterface
      * @param EventsFacadeInterface $eventsFacade
      */
     public function __construct(
-        private AmqpPluginConfiguration $pluginConfiguration,
-        private ChannelManagerInterface $channelManager,
-        private MessageSerializerFactoryInterface $messageSerializerFactory,
-        private EventsFacadeInterface $eventsFacade
+    private AmqpPluginConfiguration $pluginConfiguration,
+    private ChannelManagerInterface $channelManager,
+    private MessageSerializerFactoryInterface $messageSerializerFactory,
+    private EventsFacadeInterface $eventsFacade
     )
     {
         $this->consumerProcessorCollection = [];
@@ -56,8 +56,8 @@ class ConsumerManager implements ConsumerManagerInterface
     protected function declareConsumer(string $consumerName): AMQPChannel
     {
         $processorCollection = $this->getConsumerProcessorCollection($consumerName);
-        $configuration = $this->pluginConfiguration->getConsumerConfiguration($consumerName);
-        $channel = $this->channelManager->getChannel($configuration->getChannel(), $configuration->getConnection());
+        $configuration       = $this->pluginConfiguration->getConsumerConfiguration($consumerName);
+        $channel             = $this->channelManager->getChannel($configuration->getChannel(), $configuration->getConnection());
 
         foreach ($processorCollection as $processor) {
             $this->appendChannelConsumer($channel, $configuration, $processor);
