@@ -5,7 +5,7 @@ namespace Micro\Plugin\Amqp\Event;
 use Micro\Plugin\Amqp\Business\Message\MessageInterface;
 use Micro\Plugin\Amqp\Business\Publisher\PublisherConfigurationInterface;
 
-class PublishMessageEvent extends AbstractActionMessageEvent implements PublishMessageEventInterface
+class PublishMessageEvent extends AbstractActionMessageEvent
 {
     /**
      * @param MessageInterface $message

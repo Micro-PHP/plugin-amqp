@@ -1,6 +1,6 @@
 <?php
 
-namespace Micro\Plugin\Amqp\Business\EventLisneter;
+namespace Micro\Plugin\Amqp\Business\EventListener;
 
 use Micro\Component\EventEmitter\EventInterface;
 use Micro\Component\EventEmitter\EventListenerInterface;

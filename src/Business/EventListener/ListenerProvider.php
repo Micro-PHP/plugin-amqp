@@ -1,10 +1,9 @@
 <?php
 
-namespace Micro\Plugin\Amqp\Business\EventLisneter;
+namespace Micro\Plugin\Amqp\Business\EventListener;
 
 use Micro\Component\EventEmitter\EventListenerInterface;
 use Micro\Component\EventEmitter\Impl\Provider\AbstractListenerProvider;
-use Micro\Plugin\Amqp\AmqpPlugin;
 
 class ListenerProvider extends AbstractListenerProvider
 {

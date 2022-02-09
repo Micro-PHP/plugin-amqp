@@ -1,12 +1,11 @@
 <?php
 
-namespace Micro\Plugin\Amqp\Business\EventLisneter;
+namespace Micro\Plugin\Amqp\Business\EventListener;
 
 use Micro\Component\EventEmitter\EventInterface;
 use Micro\Component\EventEmitter\EventListenerInterface;
 use Micro\Kernel\App\Business\Event\ApplicationTerminatedEvent;
 use Micro\Plugin\Amqp\AmqpFacadeInterface;
-use Micro\Plugin\Amqp\Business\Connection\ConnectionManagerInterface;
 
 class TerminateApplicationEventListener implements EventListenerInterface
 {
