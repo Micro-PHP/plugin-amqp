@@ -1,8 +1,17 @@
 <?php
 
+/*
+ *  This file is part of the Micro framework package.
+ *
+ *  (c) Stanislau Komar <kost@micro-php.net>
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Micro\Plugin\Amqp\Console;
 
-use Micro\Plugin\Amqp\AmqpPluginConfiguration;
+use Micro\Plugin\Amqp\Facade\AmqpFacadeInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,11 +20,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ConsumerListCommand extends Command
 {
     protected static $defaultName = 'micro:amqp:consumer:list';
-    protected const HELP          = 'This command show all registered consumers whti settings.';
+    protected const HELP = 'This command show all registered consumers with settings.';
 
-
-    public function __construct(private AmqpPluginConfiguration $pluginConfiguration)
-    {
+    public function __construct(
+        private readonly AmqpFacadeInterface $amqpFacade
+    ) {
         parent::__construct(self::$defaultName);
     }
 
@@ -34,18 +43,19 @@ class ConsumerListCommand extends Command
     {
         $table = new Table($output);
         $table->setHeaders([
-            'Consumer', 'Channel', 'Queue', 'Connection', 'Tag'
+            'Consumer', 'Channel', 'Queue', 'Connection', 'Tag', 'Class',
         ]);
 
-        $consumerList = $this->pluginConfiguration->getConsumerList();
-        foreach ($consumerList as $consumer) {
-            $config = $this->pluginConfiguration->getConsumerConfiguration($consumer);
+        foreach ($this->amqpFacade->locateConsumers() as $consumerClass) {
+            $consumerName = $consumerClass::name();
+            $config = $this->amqpFacade->getConsumerConfiguration($consumerClass::name());
             $table->addRow([
-                $consumer,
+                $consumerName,
                 $config->getChannel(),
                 $config->getQueue(),
                 $config->getConnection(),
                 $config->getTag(),
+                $consumerClass,
             ]);
         }
 

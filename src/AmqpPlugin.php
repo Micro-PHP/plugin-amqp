@@ -1,139 +1,92 @@
 <?php
 
+/*
+ *  This file is part of the Micro framework package.
+ *
+ *  (c) Stanislau Komar <kost@micro-php.net>
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Micro\Plugin\Amqp;
 
+use Micro\Component\DependencyInjection\Autowire\AutowireHelperFactory;
+use Micro\Component\DependencyInjection\Autowire\AutowireHelperFactoryInterface;
 use Micro\Component\DependencyInjection\Container;
-use Micro\Component\EventEmitter\EventListenerInterface;
-use Micro\Component\EventEmitter\ListenerProviderInterface;
-use Micro\Framework\Kernel\Configuration\PluginConfigurationInterface;
-use Micro\Framework\Kernel\Plugin\AbstractPlugin;
-use Micro\Kernel\App\Business\ApplicationListenerProviderPluginInterface;
-use Micro\Plugin\Amqp\Business\EventListener\ListenerProvider;
-use Micro\Plugin\Amqp\Business\EventListener\TerminateApplicationEventListener;
-use Micro\Plugin\Amqp\Business\Serializer\MessageSerializerFactory;
-use Micro\Plugin\Amqp\Business\Serializer\MessageSerializerFactoryInterface;
-use Micro\Plugin\Amqp\Console\ConsumeCommand;
-use Micro\Plugin\Amqp\Console\ConsumerListCommand;
-use Micro\Plugin\Amqp\Console\PublisherListCommand;
-use Micro\Plugin\Console\CommandProviderInterface;
-use Micro\Plugin\EventEmitter\EventsFacadeInterface;
-use Micro\Plugin\Serializer\SerializerFacadeInterface;
-use Symfony\Component\Console\Command\Command;
+use Micro\Framework\Kernel\Plugin\ConfigurableInterface;
+use Micro\Framework\Kernel\Plugin\DependencyProviderInterface;
+use Micro\Framework\Kernel\Plugin\PluginConfigurationTrait;
+use Micro\Framework\Kernel\Plugin\PluginDependedInterface;
+use Micro\Plugin\Amqp\Business\Consumer\Locator\ConsumerLocatorFactory;
+use Micro\Plugin\Amqp\Business\Consumer\Locator\ConsumerLocatorFactoryInterface;
+use Micro\Plugin\Amqp\Facade\AmqpFacade;
+use Micro\Plugin\Amqp\Facade\AmqpFacadeInterface;
+use Micro\Plugin\Console\ConsolePlugin;
+use Micro\Plugin\Locator\Facade\LocatorFacadeInterface;
+use Micro\Plugin\Uuid\UuidFacadeInterface;
+use Micro\Plugin\Uuid\UuidPlugin;
 
 /**
  * @method AmqpPluginConfiguration configuration()
  */
-class AmqpPlugin extends AbstractPlugin implements ApplicationListenerProviderPluginInterface, CommandProviderInterface
+class AmqpPlugin implements DependencyProviderInterface, PluginDependedInterface, ConfigurableInterface
 {
-    /**
-     * @var Container|null
-     */
-    private ?Container $container = null;
+    use PluginConfigurationTrait;
+
+    private UuidFacadeInterface $uuidFacade;
+
+    private AutowireHelperFactoryInterface $autowireHelperFactory;
+
+    private LocatorFacadeInterface $locatorFacade;
 
     /**
      * {@inheritDoc}
      */
     public function provideDependencies(Container $container): void
     {
-        $this->container = $container;
-
         $container->register(
-            AmqpFacadeInterface::class, function (Container $container) {
+            AmqpFacadeInterface::class, function (
+                UuidFacadeInterface $uuidFacade,
+                LocatorFacadeInterface $locatorFacade
+            ) use ($container) {
+                $this->uuidFacade = $uuidFacade;
+                $this->locatorFacade = $locatorFacade;
+                $this->autowireHelperFactory = new AutowireHelperFactory($container);
+
                 return $this->createAmqpFacade();
             }
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function provideConsoleCommands(Container $container): array
-    {
-        return [
-            $this->createCommandConsume(),
-            $this->createCommandListConsumer(),
-            $this->createCommandListPublisher(),
-        ];
-    }
-
-    /**
-     * @return Command
-     */
-    protected function createCommandListConsumer(): Command
-    {
-        return new ConsumerListCommand($this->configuration());
-    }
-
-    /**
-     * @return Command
-     */
-    protected function createCommandListPublisher(): Command
-    {
-        return new PublisherListCommand($this->configuration());
-    }
-
-    /**
-     * @return ConsumeCommand
-     */
-    protected function createCommandConsume(): Command
-    {
-        return new ConsumeCommand($this->container->get(AmqpFacadeInterface::class));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getEventListenerProvider(): ListenerProviderInterface
-    {
-        return new ListenerProvider(
-            $this->createTerminateEventListener(),
-        );
-    }
-
-    /**
-     * @return EventListenerInterface
-     */
-    protected function createTerminateEventListener(): EventListenerInterface
-    {
-        return new TerminateApplicationEventListener($this->container->get(AmqpFacadeInterface::class));
-    }
-
-    /**
-     * @return AmqpFacadeInterface
-     */
     protected function createAmqpFacade(): AmqpFacadeInterface
     {
         return new AmqpFacade(
             $this->createPluginComponentBuilder(),
-            $this->createMessageSerializerFactory()
+            $this->createConsumerLocatorFactory(),
+            $this->configuration()
         );
     }
 
-    /**
-     * @return PluginComponentBuilderInterface
-     */
+    public function createConsumerLocatorFactory(): ConsumerLocatorFactoryInterface
+    {
+        return new ConsumerLocatorFactory($this->locatorFacade);
+    }
+
     protected function createPluginComponentBuilder(): PluginComponentBuilderInterface
     {
         return new PluginComponentBuilder(
             $this->configuration(),
-            $this->createMessageSerializerFactory(),
-            $this->lookupEventsFacade()
+            $this->autowireHelperFactory,
+            $this->uuidFacade,
         );
     }
 
-    /**
-     * @return EventsFacadeInterface
-     */
-    protected function lookupEventsFacade(): EventsFacadeInterface
+    public function getDependedPlugins(): iterable
     {
-        return $this->container->get(EventsFacadeInterface::class);
-    }
-
-    /**
-     * @return MessageSerializerFactoryInterface
-     */
-    protected function createMessageSerializerFactory(): MessageSerializerFactoryInterface
-    {
-        return new MessageSerializerFactory($this->container->get(SerializerFacadeInterface::class));
+        return [
+            ConsolePlugin::class,
+            UuidPlugin::class,
+        ];
     }
 }

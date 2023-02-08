@@ -1,46 +1,33 @@
 <?php
 
+/*
+ *  This file is part of the Micro framework package.
+ *
+ *  (c) Stanislau Komar <kost@micro-php.net>
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Micro\Plugin\Amqp\Business\Channel;
 
 use Micro\Plugin\Amqp\Business\Connection\ConnectionManagerInterface;
 use PhpAmqpLib\Channel\AMQPChannel;
 
-class ChannelManager implements ChannelManagerInterface
+readonly class ChannelManager implements ChannelManagerInterface
 {
-    /**
-     * @var array<string, int>
-     */
-    private array $channels;
-    /**
-     * @param ConnectionManagerInterface $connectionManager
-     */
     public function __construct(
-    private ConnectionManagerInterface $connectionManager
-    )
-    {
-        $this->channels = [];
+        private ConnectionManagerInterface $connectionManager
+    ) {
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getChannel(string $channelName, string $connectionName = null): AMQPChannel
+    public function getChannel(string $connectionName): AMQPChannel
     {
-        $channelId = null;
-        if(!empty($this->channels[$channelName])) {
-            $channelId = $this->channels[$channelName];
-        }
-
-        $channel =  $this->connectionManager
+        return $this->connectionManager
             ->getConnection($connectionName)
-            ->channel($channelId);
-
-        $this->channels[$channelName] = $channel->getChannelId();
-
-        return $channel;
-    }
-
-    public function init(): void
-    {
+            ->channel();
     }
 }

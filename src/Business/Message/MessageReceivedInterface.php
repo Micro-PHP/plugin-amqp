@@ -1,24 +1,19 @@
 <?php
 
+/*
+ *  This file is part of the Micro framework package.
+ *
+ *  (c) Stanislau Komar <kost@micro-php.net>
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Micro\Plugin\Amqp\Business\Message;
 
 interface MessageReceivedInterface
 {
-    /**
-     * @return MessageInterface
-     */
-    public function content(): MessageInterface;
+    public function content(): string;
 
-    /**
-     * @param bool $multiple
-     * @return void
-     */
-    public function ack(bool $multiple = false): void;
-
-    /**
-     * @param bool $requeue
-     * @param bool $multiple
-     * @return void
-     */
-    public function nack(bool $requeue = false, bool $multiple = false): void;
+    public function getOption(string $option, mixed $default = null): mixed;
 }

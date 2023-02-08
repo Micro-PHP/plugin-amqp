@@ -1,78 +1,58 @@
 <?php
 
+/*
+ *  This file is part of the Micro framework package.
+ *
+ *  (c) Stanislau Komar <kost@micro-php.net>
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Micro\Plugin\Amqp\Business\Publisher;
 
 use Micro\Plugin\Amqp\Business\Channel\ChannelManagerInterface;
-use Micro\Plugin\Amqp\Business\Message\MessageInterface;
-use Micro\Plugin\Amqp\Business\Serializer\MessageSerializerFactoryInterface;
-use Micro\Plugin\Amqp\Event\PublishMessageEvent;
-use Micro\Plugin\EventEmitter\EventsFacadeInterface;
+use Micro\Plugin\Amqp\Configuration\Publisher\PublisherConfigurationInterface;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 
-class Publisher implements PublisherInterface
+readonly class Publisher implements PublisherInterface
 {
-    /**
-     * @param ChannelManagerInterface $channelManager
-     * @param PublisherConfigurationInterface $publisherConfiguration
-     * @param MessageSerializerFactoryInterface $messageSerializerFactory
-     * @param EventsFacadeInterface $eventsFacade
-     */
     public function __construct(
-    private ChannelManagerInterface                 $channelManager,
-    private PublisherConfigurationInterface         $publisherConfiguration,
-    private MessageSerializerFactoryInterface       $messageSerializerFactory,
-    private EventsFacadeInterface                   $eventsFacade
-    )
-    {
+        private ChannelManagerInterface $channelManager,
+        private PublisherConfigurationInterface $publisherConfiguration
+    ) {
     }
 
     /**
-     * @param  MessageInterface $message
-     * @return void
+     * {@inheritDoc}
      */
-    public function publish(MessageInterface $message): void
+    public function publish(string $message, string $routingKey = '', array $options = []): void
     {
         $channel = $this->getChannel();
-        $this->eventsFacade->emit(new PublishMessageEvent($message, $this->publisherConfiguration));
+
         $channel->basic_publish(
-            $this->createAmqpMessage($message),
-            $this->publisherConfiguration->getExchange()
+            $this->createAmqpMessage($message, $options),
+            $this->publisherConfiguration->getExchange(),
+            $routingKey
         );
     }
 
-    /**
-     * @return AMQPChannel
-     */
     protected function getChannel(): AMQPChannel
     {
         return $this->channelManager->getChannel(
-            $this->publisherConfiguration->getChannel(),
             $this->publisherConfiguration->getConnection()
         );
     }
 
     /**
-     * @param  MessageInterface $message
-     * @return AMQPMessage
+     * @param array<string, mixed> $options
      */
-    protected function createAmqpMessage(MessageInterface $message): AMQPMessage
+    protected function createAmqpMessage(string $message, array $options = []): AMQPMessage
     {
-        return new AMQPMessage(
-            $this->createContent($message),
-            [
-                'content_type'  => $this->publisherConfiguration->getContentType(),
-                'delivery_mode' => $this->publisherConfiguration->getDeliveryMode(),
-            ]
-        );
-    }
-
-    /**
-     * @param MessageInterface $message
-     * @return string
-     */
-    protected function createContent(MessageInterface $message): string
-    {
-        return $this->messageSerializerFactory->create()->serialize($message);
+        return new AMQPMessage($message, array_merge([
+            'content_type' => $this->publisherConfiguration->getContentType(),
+            'delivery_mode' => $this->publisherConfiguration->getDeliveryMode(),
+        ], $options));
     }
 }

@@ -1,60 +1,37 @@
 <?php
 
+/*
+ *  This file is part of the Micro framework package.
+ *
+ *  (c) Stanislau Komar <kost@micro-php.net>
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Micro\Plugin\Amqp\Business\Message;
 
-use Micro\Plugin\Amqp\Event\AckMessageEvent;
-use Micro\Plugin\Amqp\Event\NackMessageEvent;
-use Micro\Plugin\EventEmitter\EventsFacadeInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 
-class MessageReceived implements MessageReceivedInterface
+readonly class MessageReceived implements MessageReceivedInterface
 {
-    /**
-     * @param AMQPMessage $source
-     * @param MessageInterface $message
-     * @param EventsFacadeInterface $eventsFacade
-     */
     public function __construct(
-    private AMQPMessage $source,
-    private MessageInterface $message,
-    private EventsFacadeInterface $eventsFacade
-    )
-    {
+        private AMQPMessage $source
+    ) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected function source(): AMQPMessage
     {
         return $this->source;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function content(): MessageInterface
+    public function content(): string
     {
-        return $this->message;
+        return $this->source->getBody();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function ack(bool $multiple = false): void
+    public function getOption(string $option, mixed $default = null): mixed
     {
-        $this->source()->ack();
-
-        $this->eventsFacade->emit(new AckMessageEvent($this));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function nack(bool $requeue = false, bool $multiple = false): void
-    {
-        $this->source()->nack($requeue, $multiple);
-
-        $this->eventsFacade->emit(new NackMessageEvent($this));
+        return $this->source()->get($option) ?: $default;
     }
 }

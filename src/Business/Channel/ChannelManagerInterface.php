@@ -1,15 +1,19 @@
 <?php
 
+/*
+ *  This file is part of the Micro framework package.
+ *
+ *  (c) Stanislau Komar <kost@micro-php.net>
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Micro\Plugin\Amqp\Business\Channel;
 
 use PhpAmqpLib\Channel\AMQPChannel;
 
 interface ChannelManagerInterface
 {
-    /**
-     * @param  string      $channelName
-     * @param  string|null $connectionName
-     * @return AMQPChannel
-     */
-    public function getChannel(string $channelName, string $connectionName = null): AMQPChannel;
+    public function getChannel(string $connectionName): AMQPChannel;
 }

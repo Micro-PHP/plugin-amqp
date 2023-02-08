@@ -1,21 +1,24 @@
 <?php
 
-namespace Micro\Plugin\Amqp\Business\Publisher;
+/*
+ *  This file is part of the Micro framework package.
+ *
+ *  (c) Stanislau Komar <kost@micro-php.net>
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
 
-use Micro\Plugin\Amqp\AmqpPluginConfiguration;
-use Micro\Plugin\Amqp\Business\Message\MessageInterface;
+namespace Micro\Plugin\Amqp\Business\Publisher;
 
 class PublisherManager implements PublisherManagerInterface
 {
     /**
-     * @var array
+     * @var PublisherInterface[]
      */
     private array $publisherCollection;
 
-    /**
-     * @param PublisherFactoryInterface $publisherFactory
-     */
-    public function __construct(private PublisherFactoryInterface $publisherFactory)
+    public function __construct(private readonly PublisherFactoryInterface $publisherFactory)
     {
         $this->publisherCollection = [];
     }
@@ -23,9 +26,13 @@ class PublisherManager implements PublisherManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function publish(MessageInterface $message, string $publisherName = AmqpPluginConfiguration::PUBLISHER_DEFAULT): void
-    {
-        $this->getPublisher($publisherName)->publish($message);
+    public function publish(
+        string $message,
+        string $publisherName,
+        string $routingKey,
+        array $options
+    ): void {
+        $this->getPublisher($publisherName)->publish($message, $routingKey, $options);
     }
 
     /**
@@ -33,7 +40,7 @@ class PublisherManager implements PublisherManagerInterface
      */
     protected function getPublisher(string $publisherName): PublisherInterface
     {
-        if(!empty($this->publisherCollection[$publisherName])) {
+        if (!empty($this->publisherCollection[$publisherName])) {
             return $this->publisherCollection[$publisherName];
         }
 
