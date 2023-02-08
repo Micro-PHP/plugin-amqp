@@ -56,6 +56,8 @@ class RpcPublisher implements RpcPublisherInterface
             5
         );
 
+        $channel->close();
+
         return $this->response;
     }
 

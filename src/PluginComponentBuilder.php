@@ -53,7 +53,7 @@ class PluginComponentBuilder implements PluginComponentBuilderInterface
         $this->initialized = false;
         // TODO: Factory for each manager
         $this->connectionManager = new ConnectionManager($this->configuration, new ConnectionBuilder());
-        $this->channelManager = new ChannelManager($this->connectionManager);
+        $this->channelManager = new ChannelManager($this->connectionManager, $this->configuration);
         $this->queueManager = new QueueManager($this->channelManager, $this->configuration);
         $this->exchangeManager = new ExchangeManager($this->channelManager, $this->configuration);
     }

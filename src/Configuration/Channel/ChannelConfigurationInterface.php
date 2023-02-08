@@ -19,4 +19,10 @@ interface ChannelConfigurationInterface
      * @return BindingConfigurationInterface[]
      */
     public function getBindings(): array;
+
+    public function getQosPrefetchSize(): int;
+
+    public function getQosPrefetchCount(): int;
+
+    public function isQosGlobal(): bool;
 }

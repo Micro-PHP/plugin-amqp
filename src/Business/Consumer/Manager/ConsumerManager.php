@@ -34,6 +34,8 @@ readonly class ConsumerManager implements ConsumerManagerInterface
         while ($channel->is_consuming()) {
             $channel->wait();
         }
+
+        $channel->close();
     }
 
     /**
