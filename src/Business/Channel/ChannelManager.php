@@ -11,23 +11,32 @@
 
 namespace Micro\Plugin\Amqp\Business\Channel;
 
+use Micro\Plugin\Amqp\AmqpPluginConfiguration;
 use Micro\Plugin\Amqp\Business\Connection\ConnectionManagerInterface;
 use PhpAmqpLib\Channel\AMQPChannel;
 
 readonly class ChannelManager implements ChannelManagerInterface
 {
     public function __construct(
-        private ConnectionManagerInterface $connectionManager
+        private ConnectionManagerInterface $connectionManager,
+        private AmqpPluginConfiguration $pluginConfiguration
     ) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getChannel(string $connectionName): AMQPChannel
     {
-        return $this->connectionManager
+        $channel = $this->connectionManager
             ->getConnection($connectionName)
             ->channel();
+
+        $channelCfg = $this->pluginConfiguration->getChannelConfiguration($connectionName);
+
+        $channel->basic_qos(
+            $channelCfg->getQosPrefetchSize(),
+            $channelCfg->getQosPrefetchCount(),
+            $channelCfg->isQosGlobal(),
+        );
+
+        return $channel;
     }
 }

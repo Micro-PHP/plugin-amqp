@@ -18,6 +18,13 @@ use Micro\Plugin\Amqp\Configuration\Binding\BindingConfigurationInterface;
 class ChannelConfiguration extends AbstractAmqpComponentConfiguration implements ChannelConfigurationInterface
 {
     private const CFG_BINDINGS = 'AMQP_CHANNEL_%s_BINDINGS';
+
+    private const CFG_QOS_GLOBAL = 'AMQP_CHANNEL_%s_QOS_IS_GLOBAL';
+
+    private const CFG_QOS_PREFETCH_SIZE = 'AMQP_CHANNEL_%s_QOS_PREFETCH_SIZE';
+
+    private const CFG_QOS_PREFETCH_COUNT = 'AMQP_CHANNEL_%s_QOS_PREFETCH_COUNT';
+
     private const BINDINGS_DEFAULT = '%s:%s:%s';
     private const LIST_QUEUE_POSITION = 0;
     private const LIST_EXCHANGE_POSITION = 1;
@@ -66,5 +73,20 @@ class ChannelConfiguration extends AbstractAmqpComponentConfiguration implements
             $bindingArray[self::LIST_EXCHANGE_POSITION] ?? $this->configRoutingKey,
             $bindingArray[self::LIST_CONNECTION_POSITION] ?? $this->configRoutingKey,
         );
+    }
+
+    public function getQosPrefetchSize(): int
+    {
+        return (int) $this->get(self::CFG_QOS_PREFETCH_SIZE, 10, false);
+    }
+
+    public function getQosPrefetchCount(): int
+    {
+        return (int) $this->get(self::CFG_QOS_PREFETCH_COUNT, 10, false);
+    }
+
+    public function isQosGlobal(): bool
+    {
+        return (bool) $this->get(self::CFG_QOS_GLOBAL, false, false);
     }
 }

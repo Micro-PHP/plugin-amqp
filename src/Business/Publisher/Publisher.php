@@ -36,6 +36,8 @@ readonly class Publisher implements PublisherInterface
             $this->publisherConfiguration->getExchange(),
             $routingKey
         );
+
+        $channel->close();
     }
 
     protected function getChannel(): AMQPChannel
