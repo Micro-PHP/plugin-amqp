@@ -1,16 +1,25 @@
 <?php
 
-namespace Micro\Plugin\Amqp\Business\Publisher;
+/*
+ *  This file is part of the Micro framework package.
+ *
+ *  (c) Stanislau Komar <kost@micro-php.net>
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
 
-use Micro\Plugin\Amqp\AmqpPluginConfiguration;
-use Micro\Plugin\Amqp\Business\Message\MessageInterface;
+namespace Micro\Plugin\Amqp\Business\Publisher;
 
 interface PublisherManagerInterface
 {
     /**
-     * @param MessageInterface $message
-     * @param string $publisherName
-     * @return void
+     * @param array<string, mixed> $options
      */
-    public function publish(MessageInterface $message, string $publisherName = AmqpPluginConfiguration::PUBLISHER_DEFAULT): void;
+    public function publish(
+        string $message,
+        string $publisherName,
+        string $routingKey,
+        array $options
+    ): void;
 }

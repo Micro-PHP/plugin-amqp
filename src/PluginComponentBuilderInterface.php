@@ -1,30 +1,33 @@
 <?php
 
+/*
+ *  This file is part of the Micro framework package.
+ *
+ *  (c) Stanislau Komar <kost@micro-php.net>
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Micro\Plugin\Amqp;
 
 use Micro\Plugin\Amqp\Business\Connection\ConnectionManagerInterface;
-use Micro\Plugin\Amqp\Business\Consumer\ConsumerManagerInterface;
+use Micro\Plugin\Amqp\Business\Consumer\Manager\ConsumerManagerInterface;
 use Micro\Plugin\Amqp\Business\Publisher\PublisherManagerInterface;
+use Micro\Plugin\Amqp\Business\Rpc\RpcPublisherFactoryInterface;
 
 interface PluginComponentBuilderInterface
 {
     /**
      * @return $this
      */
-    public function initialize(): self;
+    public function initialize(string $initializeAlias): self;
 
-    /**
-     * @return ConsumerManagerInterface
-     */
     public function createConsumerManager(): ConsumerManagerInterface;
 
-    /**
-     * @return PublisherManagerInterface
-     */
     public function createMessagePublisherManager(): PublisherManagerInterface;
 
-    /**
-     * @return ConnectionManagerInterface
-     */
     public function getConnectionManager(): ConnectionManagerInterface;
+
+    public function createRpcPublisherFactory(): RpcPublisherFactoryInterface;
 }

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ *  This file is part of the Micro framework package.
+ *
+ *  (c) Stanislau Komar <kost@micro-php.net>
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Micro\Plugin\Amqp\Business\Connection;
 
 use Micro\Plugin\Amqp\AmqpPluginConfiguration;
@@ -15,8 +24,7 @@ class ConnectionManager implements ConnectionManagerInterface
     public function __construct(
     private AmqpPluginConfiguration $configuration,
     private ConnectionBuilder $connectionBuilder
-    )
-    {
+    ) {
         $this->connections = [];
     }
 
@@ -25,18 +33,13 @@ class ConnectionManager implements ConnectionManagerInterface
      */
     public function getConnection(string $connectionName): AMQPStreamConnection
     {
-        if(array_key_exists($connectionName, $this->connections)) {
+        if (\array_key_exists($connectionName, $this->connections)) {
             return $this->connections[$connectionName];
         }
 
         return $this->connections[$connectionName] = $this->createConnection($connectionName);
-
     }
 
-    /**
-     * @param  string $connectionName
-     * @return AMQPStreamConnection
-     */
     protected function createConnection(string $connectionName): AMQPStreamConnection
     {
         return $this->connectionBuilder->createConnection(
@@ -45,8 +48,6 @@ class ConnectionManager implements ConnectionManagerInterface
     }
 
     /**
-     * @param  string $connectionName
-     * @return void
      * @throws \Exception
      */
     public function closeConnection(string $connectionName): void
@@ -56,7 +57,6 @@ class ConnectionManager implements ConnectionManagerInterface
     }
 
     /**
-     * @return void
      * @throws \Exception
      */
     public function closeConnectionsAll(): void

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ *  This file is part of the Micro framework package.
+ *
+ *  (c) Stanislau Komar <kost@micro-php.net>
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Micro\Plugin\Amqp\Business\Exchange;
 
 use Micro\Plugin\Amqp\AmqpPluginConfiguration;
@@ -7,23 +16,18 @@ use Micro\Plugin\Amqp\Business\Channel\ChannelManagerInterface;
 
 class ExchangeManager implements ExchangeManagerInterface
 {
-    /**
-     * @param ChannelManagerInterface $channelManager
-     * @param AmqpPluginConfiguration $pluginConfiguration
-     */
     public function __construct(
-    private ChannelManagerInterface $channelManager,
-    private AmqpPluginConfiguration $pluginConfiguration
-    )
-    {
+    private readonly ChannelManagerInterface $channelManager,
+    private readonly AmqpPluginConfiguration $pluginConfiguration
+    ) {
     }
 
     /**
      * {@inheritDoc}
      */
-    public function exchangeDeclare(string $connectionName, string $exchangeName, string $channelName = null): void
+    public function exchangeDeclare(string $connectionName, string $exchangeName): void
     {
-        $channel       = $this->channelManager->getChannel($channelName, $connectionName);
+        $channel = $this->channelManager->getChannel($connectionName);
         $configuration = $this->pluginConfiguration->getExchangeConfiguration($exchangeName);
 
         $channel->exchange_declare(
@@ -51,9 +55,7 @@ class ExchangeManager implements ExchangeManagerInterface
             $exchangeConfig = $this->pluginConfiguration->getExchangeConfiguration($exchangeName);
             $connectionList = $exchangeConfig->getConnectionList();
             foreach ($connectionList as $connectionName) {
-                foreach ($exchangeConfig->getChannelList() as $channelName) {
-                    $this->exchangeDeclare($connectionName, $exchangeName, $channelName);
-                }
+                $this->exchangeDeclare($connectionName, $exchangeName);
             }
         }
     }
