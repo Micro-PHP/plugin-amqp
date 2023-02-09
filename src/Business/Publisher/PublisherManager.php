@@ -29,8 +29,8 @@ class PublisherManager implements PublisherManagerInterface
     public function publish(
         string $message,
         string $publisherName,
-        string $routingKey,
-        array $options
+        string $routingKey = '',
+        array $options = []
     ): void {
         $this->getPublisher($publisherName)->publish($message, $routingKey, $options);
     }

@@ -19,7 +19,7 @@ interface PublisherManagerInterface
     public function publish(
         string $message,
         string $publisherName,
-        string $routingKey,
-        array $options
+        string $routingKey = '',
+        array $options = []
     ): void;
 }
