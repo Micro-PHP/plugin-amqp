@@ -43,6 +43,10 @@ readonly class ConsumerProcessorProxyBuilder
                 );
 
                 return;
+            } catch (\Throwable $exception) {
+                $message->reject(false);
+
+                throw $exception;
             }
 
             $properties = $message->get_properties();
