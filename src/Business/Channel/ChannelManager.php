@@ -31,11 +31,14 @@ readonly class ChannelManager implements ChannelManagerInterface
 
         $channelCfg = $this->pluginConfiguration->getChannelConfiguration($connectionName);
 
-        $channel->basic_qos(
-            $channelCfg->getQosPrefetchSize(),
-            $channelCfg->getQosPrefetchCount(),
-            $channelCfg->isQosGlobal(),
-        );
+        $prefetchCount = $channelCfg->getQosPrefetchCount();
+        if ($prefetchCount) {
+            $channel->basic_qos(
+                0,
+                $prefetchCount,
+                false,
+            );
+        }
 
         return $channel;
     }

@@ -19,10 +19,6 @@ class ChannelConfiguration extends AbstractAmqpComponentConfiguration implements
 {
     private const CFG_BINDINGS = 'AMQP_CHANNEL_%s_BINDINGS';
 
-    private const CFG_QOS_GLOBAL = 'AMQP_CHANNEL_%s_QOS_IS_GLOBAL';
-
-    private const CFG_QOS_PREFETCH_SIZE = 'AMQP_CHANNEL_%s_QOS_PREFETCH_SIZE';
-
     private const CFG_QOS_PREFETCH_COUNT = 'AMQP_CHANNEL_%s_QOS_PREFETCH_COUNT';
 
     private const BINDINGS_DEFAULT = '%s:%s:%s';
@@ -75,18 +71,8 @@ class ChannelConfiguration extends AbstractAmqpComponentConfiguration implements
         );
     }
 
-    public function getQosPrefetchSize(): int
-    {
-        return (int) $this->get(self::CFG_QOS_PREFETCH_SIZE, 10, false);
-    }
-
     public function getQosPrefetchCount(): int
     {
-        return (int) $this->get(self::CFG_QOS_PREFETCH_COUNT, 10, false);
-    }
-
-    public function isQosGlobal(): bool
-    {
-        return (bool) $this->get(self::CFG_QOS_GLOBAL, false, false);
+        return (int) $this->get(self::CFG_QOS_PREFETCH_COUNT, 0, false);
     }
 }
