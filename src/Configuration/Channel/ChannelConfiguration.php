@@ -21,6 +21,8 @@ class ChannelConfiguration extends AbstractAmqpComponentConfiguration implements
 
     private const CFG_QOS_PREFETCH_COUNT = 'AMQP_CHANNEL_%s_QOS_PREFETCH_COUNT';
 
+    private const CFG_RPC_TIMEOUT = 'AMQP_CHANNEL_%s_RPC_TIMEOUT';
+
     private const BINDINGS_DEFAULT = '%s:%s:%s';
     private const LIST_QUEUE_POSITION = 0;
     private const LIST_EXCHANGE_POSITION = 1;
@@ -29,6 +31,11 @@ class ChannelConfiguration extends AbstractAmqpComponentConfiguration implements
     public function getName(): string
     {
         return $this->configRoutingKey;
+    }
+
+    public function getRpcTimeout(): int
+    {
+        return $this->get(self::CFG_RPC_TIMEOUT, 30, false);
     }
 
     /**

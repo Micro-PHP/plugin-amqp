@@ -20,5 +20,7 @@ interface ChannelConfigurationInterface
      */
     public function getBindings(): array;
 
+    public function getRpcTimeout(): int;
+
     public function getQosPrefetchCount(): int;
 }
