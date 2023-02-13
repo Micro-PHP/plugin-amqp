@@ -14,6 +14,8 @@ namespace Micro\Plugin\Amqp\Business\Rpc;
 use Micro\Plugin\Amqp\AmqpPluginConfiguration;
 use Micro\Plugin\Amqp\Business\Channel\ChannelManagerInterface;
 use Micro\Plugin\Amqp\Business\Exchange\ExchangeManagerInterface;
+use Micro\Plugin\Amqp\Configuration\Channel\ChannelConfigurationInterface;
+use Micro\Plugin\Amqp\Configuration\Publisher\PublisherConfigurationInterface;
 use Micro\Plugin\Uuid\UuidFacadeInterface;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -40,7 +42,9 @@ class RpcPublisher implements RpcPublisherInterface
 
     public function rpc(string $message, string $publisherName): string
     {
-        $channel = $this->initialize($publisherName);
+        $publisherConfiguration = $this->amqpPluginConfiguration->getPublisherConfiguration($publisherName);
+        $channelCfg = $this->amqpPluginConfiguration->getChannelConfiguration($publisherConfiguration->getChannel());
+        $channel = $this->initialize($publisherConfiguration, $channelCfg);
 
         $msg = new AMQPMessage($message, [
             self::OPT_CORRELATION_ID => $this->correlationId,
@@ -53,7 +57,7 @@ class RpcPublisher implements RpcPublisherInterface
         $channel->wait(
             null,
             false,
-            5
+            $channelCfg->getRpcTimeout(),
         );
 
         $channel->close();
@@ -76,9 +80,10 @@ class RpcPublisher implements RpcPublisherInterface
         }
     }
 
-    protected function initialize(string $publisherName): AMQPChannel
-    {
-        $publisherConfiguration = $this->amqpPluginConfiguration->getPublisherConfiguration($publisherName);
+    protected function initialize(
+        PublisherConfigurationInterface $publisherConfiguration,
+        ChannelConfigurationInterface $channelConfiguration
+    ): AMQPChannel {
         $publisherName = $publisherConfiguration->getName();
         $connectionName = $publisherConfiguration->getConnection();
 
@@ -91,6 +96,11 @@ class RpcPublisher implements RpcPublisherInterface
             false,
             false,
             true,
+            true,
+            false,
+            [
+                'x-message-ttl' => $channelConfiguration->getRpcTimeout() * 1000, // Timeout * Milliseconds
+            ]
         );
 
         if (!$declared) {
