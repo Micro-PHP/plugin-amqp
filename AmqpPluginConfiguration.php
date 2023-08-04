@@ -11,7 +11,7 @@
 
 namespace Micro\Plugin\Amqp;
 
-use Micro\Framework\Kernel\Configuration\PluginConfiguration;
+use Micro\Framework\BootConfiguration\Configuration\PluginConfiguration;
 use Micro\Plugin\Amqp\Configuration\Channel\ChannelConfiguration;
 use Micro\Plugin\Amqp\Configuration\Channel\ChannelConfigurationInterface;
 use Micro\Plugin\Amqp\Configuration\Connection\ConnectionConfiguration;

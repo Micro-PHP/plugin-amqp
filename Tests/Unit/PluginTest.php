@@ -11,13 +11,13 @@ declare(strict_types=1);
  *  file that was distributed with this source code.
  */
 
-namespace Micro\Plugin\Amqp\Test\Unit;
+namespace Micro\Plugin\Amqp\Tests\Unit;
 
-use Micro\Kernel\App\AppKernel;
+use Micro\Framework\KernelApp\AppKernel;
 use Micro\Plugin\Amqp\AmqpPlugin;
 use Micro\Plugin\Amqp\Business\Consumer\Processor\ConsumerProcessorInterface;
 use Micro\Plugin\Amqp\Facade\AmqpFacadeInterface;
-use Micro\Plugin\Amqp\Test\Unit\Consumer\TestConsumer;
+use Micro\Plugin\Amqp\Tests\Unit\Consumer\TestConsumer;
 use PHPUnit\Framework\TestCase;
 
 class PluginTest extends TestCase

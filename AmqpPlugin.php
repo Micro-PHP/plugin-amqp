@@ -13,11 +13,11 @@ namespace Micro\Plugin\Amqp;
 
 use Micro\Component\DependencyInjection\Autowire\AutowireHelperFactory;
 use Micro\Component\DependencyInjection\Autowire\AutowireHelperFactoryInterface;
-use Micro\Component\DependencyInjection\Container;
-use Micro\Framework\Kernel\Plugin\ConfigurableInterface;
-use Micro\Framework\Kernel\Plugin\DependencyProviderInterface;
-use Micro\Framework\Kernel\Plugin\PluginConfigurationTrait;
-use Micro\Framework\Kernel\Plugin\PluginDependedInterface;
+use Micro\Framework\DependencyInjection\Container;
+use Micro\Framework\BootConfiguration\Plugin\ConfigurableInterface;
+use Micro\Framework\BootDependency\Plugin\DependencyProviderInterface;
+use Micro\Framework\BootConfiguration\Plugin\PluginConfigurationTrait;
+use Micro\Framework\BootPluginDependent\Plugin\PluginDependedInterface;
 use Micro\Plugin\Amqp\Business\Consumer\Locator\ConsumerLocatorFactory;
 use Micro\Plugin\Amqp\Business\Consumer\Locator\ConsumerLocatorFactoryInterface;
 use Micro\Plugin\Amqp\Facade\AmqpFacade;

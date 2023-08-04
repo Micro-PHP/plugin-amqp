@@ -11,9 +11,9 @@ declare(strict_types=1);
  *  file that was distributed with this source code.
  */
 
-namespace Micro\Plugin\Amqp\Test\Unit\Business\Connection;
+namespace Micro\Plugin\Amqp\Tests\Unit\Business\Connection;
 
-use Micro\Framework\Kernel\Configuration\DefaultApplicationConfiguration;
+use Micro\Framework\BootConfiguration\Configuration\DefaultApplicationConfiguration;
 use Micro\Plugin\Amqp\Business\Connection\ConnectionBuilder;
 use Micro\Plugin\Amqp\Configuration\Connection\ConnectionConfiguration;
 use PhpAmqpLib\Exception\AMQPIOException;

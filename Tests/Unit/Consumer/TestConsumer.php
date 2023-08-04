@@ -11,7 +11,7 @@ declare(strict_types=1);
  *  file that was distributed with this source code.
  */
 
-namespace Micro\Plugin\Amqp\Test\Unit\Consumer;
+namespace Micro\Plugin\Amqp\Tests\Unit\Consumer;
 
 use Micro\Plugin\Amqp\Business\Consumer\Processor\ConsumerProcessorInterface;
 use Micro\Plugin\Amqp\Business\Message\MessageReceivedInterface;
