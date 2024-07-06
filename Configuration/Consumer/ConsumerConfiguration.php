@@ -29,57 +29,36 @@ class ConsumerConfiguration extends AbstractAmqpComponentConfiguration implement
         return $this->get(self::CFG_QUEUE, $this->configRoutingKey);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getChannel(): string
     {
         return $this->get(self::CFG_CHANNEL, $this->configRoutingKey);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getConnection(): string
     {
         return $this->get(self::CFG_CONNECTION, 'default');
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getTag(): string
     {
         return $this->get(self::CFG_TAG, '');
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isNoWait(): bool
     {
         return $this->get(self::CFG_NO_WAIT, false);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isExclusive(): bool
     {
         return $this->get(self::CFG_EXCLUSIVE, false);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isNoAck(): bool
     {
         return $this->get(self::CFG_NO_ACK, false);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isNoLocal(): bool
     {
         return $this->get(self::CFG_NO_LOCAL, false);

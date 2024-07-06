@@ -33,65 +33,41 @@ class ConnectionConfiguration extends AbstractAmqpComponentConfiguration impleme
     private const CFG_SSL_ENABLED = 'AMQP_CONNECTION_%s_SSL_ENABLED';
     private const CFG_SSL_PROTOCOL = 'AMQP_CONNECTION_%s_SSL_PROTOCOL';
 
-    /**
-     * {@inheritDoc}
-     */
     public function getHost(): string
     {
         return $this->get(self::CFG_HOST, 'localhost');
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getPort(): int
     {
         return (int) $this->get(self::CFG_PORT, 5672);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getName(): string
     {
         return $this->configRoutingKey;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getUsername(): string
     {
         return $this->get(self::CFG_LOGIN, 'guest');
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getPassword(): string
     {
         return $this->get(self::CFG_PASSWORD, 'guest');
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getConnectionTimeout(): float
     {
         return (float) $this->get(self::CFG_TIMEOUT_READ);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getReadWriteTimeout(): float
     {
         return (float) $this->get(self::CFG_TIMEOUT_WRITE);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getRpcTimeout(): float
     {
         return (float) $this->get(self::CFG_TIMEOUT_RPC);
@@ -128,49 +104,31 @@ class ConnectionConfiguration extends AbstractAmqpComponentConfiguration impleme
         return $this->get(self::CFG_KEY);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isVerify(): bool
     {
         return (bool) $this->get(self::CFG_VERIFY, false);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getVirtualHost(): string
     {
         return $this->get(self::CFG_VIRTUAL_HOST, '/');
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getLocale(): string
     {
         return $this->get(self::CFG_LOCALE, 'en_US');
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function keepAlive(): bool
     {
         return $this->get(self::CFG_KEEPALIVE, false);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function sslEnabled(): bool
     {
         return $this->get(self::CFG_SSL_ENABLED, false);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getSslProtocol(): string
     {
         return $this->get(self::CFG_SSL_PROTOCOL, 'ssl');

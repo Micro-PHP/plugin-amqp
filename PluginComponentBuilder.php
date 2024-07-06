@@ -11,7 +11,7 @@
 
 namespace Micro\Plugin\Amqp;
 
-use Micro\Component\DependencyInjection\Autowire\AutowireHelperFactoryInterface;
+use Micro\Framework\Autowire\AutowireHelperFactoryInterface;
 use Micro\Plugin\Amqp\Business\Channel\ChannelManager;
 use Micro\Plugin\Amqp\Business\Channel\ChannelManagerInterface;
 use Micro\Plugin\Amqp\Business\Connection\ConnectionBuilder;
@@ -91,9 +91,6 @@ class PluginComponentBuilder implements PluginComponentBuilderInterface
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function createConsumerManager(): ConsumerManagerInterface
     {
         return new ConsumerManager(
@@ -103,9 +100,6 @@ class PluginComponentBuilder implements PluginComponentBuilderInterface
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function createMessagePublisherManager(): PublisherManagerInterface
     {
         return new PublisherManager($this->createPublisherFactory());

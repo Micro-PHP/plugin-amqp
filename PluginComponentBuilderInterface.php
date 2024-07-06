@@ -18,9 +18,6 @@ use Micro\Plugin\Amqp\Business\Rpc\RpcPublisherFactoryInterface;
 
 interface PluginComponentBuilderInterface
 {
-    /**
-     * @return $this
-     */
     public function initialize(string $initializeAlias): self;
 
     public function createConsumerManager(): ConsumerManagerInterface;

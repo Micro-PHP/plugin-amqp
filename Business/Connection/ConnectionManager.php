@@ -22,15 +22,12 @@ class ConnectionManager implements ConnectionManagerInterface
     private array $connections;
 
     public function __construct(
-    private AmqpPluginConfiguration $configuration,
-    private ConnectionBuilder $connectionBuilder
+        private readonly AmqpPluginConfiguration $configuration,
+        private readonly ConnectionBuilder $connectionBuilder
     ) {
         $this->connections = [];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getConnection(string $connectionName): AMQPStreamConnection
     {
         if (\array_key_exists($connectionName, $this->connections)) {

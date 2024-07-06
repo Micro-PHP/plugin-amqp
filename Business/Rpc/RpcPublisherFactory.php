@@ -26,9 +26,6 @@ readonly class RpcPublisherFactory implements RpcPublisherFactoryInterface
     ) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function create(): RpcPublisherInterface
     {
         return new RpcPublisher(

@@ -13,8 +13,5 @@ namespace Micro\Plugin\Amqp\Business\Publisher;
 
 interface PublisherInterface
 {
-    /**
-     * @param mixed[] $options
-     */
     public function publish(string $message, string $routingKey = '', array $options = []): void;
 }

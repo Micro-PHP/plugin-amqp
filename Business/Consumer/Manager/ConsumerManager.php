@@ -11,7 +11,7 @@
 
 namespace Micro\Plugin\Amqp\Business\Consumer\Manager;
 
-use Micro\Component\DependencyInjection\Autowire\AutowireHelperFactoryInterface;
+use Micro\Framework\Autowire\AutowireHelperFactoryInterface;
 use Micro\Plugin\Amqp\AmqpPluginConfiguration;
 use Micro\Plugin\Amqp\Business\Channel\ChannelManagerInterface;
 use Micro\Plugin\Amqp\Business\Consumer\Processor\ConsumerProcessorInterface;

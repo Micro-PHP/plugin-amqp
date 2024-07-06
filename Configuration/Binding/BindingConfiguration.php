@@ -20,25 +20,16 @@ readonly class BindingConfiguration implements BindingConfigurationInterface
     ) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getQueueName(): string
     {
         return $this->queue;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getExchangeName(): string
     {
         return $this->exchange;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getConnection(): string
     {
         return $this->connection;

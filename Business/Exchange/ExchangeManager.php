@@ -14,17 +14,14 @@ namespace Micro\Plugin\Amqp\Business\Exchange;
 use Micro\Plugin\Amqp\AmqpPluginConfiguration;
 use Micro\Plugin\Amqp\Business\Channel\ChannelManagerInterface;
 
-class ExchangeManager implements ExchangeManagerInterface
+readonly class ExchangeManager implements ExchangeManagerInterface
 {
     public function __construct(
-    private readonly ChannelManagerInterface $channelManager,
-    private readonly AmqpPluginConfiguration $pluginConfiguration
+        private ChannelManagerInterface $channelManager,
+        private AmqpPluginConfiguration $pluginConfiguration
     ) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function exchangeDeclare(string $connectionName, string $exchangeName): void
     {
         $channel = $this->channelManager->getChannel($connectionName);
@@ -45,8 +42,6 @@ class ExchangeManager implements ExchangeManagerInterface
 
     /**
      * @TODO:
-     *
-     * {@inheritDoc}
      */
     public function configure(): void
     {

@@ -14,17 +14,14 @@ namespace Micro\Plugin\Amqp\Business\Queue;
 use Micro\Plugin\Amqp\AmqpPluginConfiguration;
 use Micro\Plugin\Amqp\Business\Channel\ChannelManagerInterface;
 
-class QueueManager implements QueueManagerInterface
+readonly class QueueManager implements QueueManagerInterface
 {
     public function __construct(
-    private ChannelManagerInterface $channelManager,
-    private AmqpPluginConfiguration $pluginConfiguration
+        private ChannelManagerInterface $channelManager,
+        private AmqpPluginConfiguration $pluginConfiguration
     ) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function queueDeclare(string $connectionName, string $queueName): void
     {
         $queueConfiguration = $this->pluginConfiguration->getQueueConfiguration($queueName);
@@ -55,9 +52,6 @@ class QueueManager implements QueueManagerInterface
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function bindings(): void
     {
         $channels = $this->pluginConfiguration->getChannelList();

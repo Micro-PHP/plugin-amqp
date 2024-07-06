@@ -35,9 +35,6 @@ class PublisherManager implements PublisherManagerInterface
         $this->getPublisher($publisherName)->publish($message, $routingKey, $options);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected function getPublisher(string $publisherName): PublisherInterface
     {
         if (!empty($this->publisherCollection[$publisherName])) {

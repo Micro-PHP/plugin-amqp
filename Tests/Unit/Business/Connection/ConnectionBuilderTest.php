@@ -39,7 +39,7 @@ class ConnectionBuilderTest extends TestCase
         $this->assertEquals($cfg->getReadWriteTimeout(), $connection->getReadTimeout());
     }
 
-    public function dataProvider(): array
+    public static function dataProvider(): array
     {
         return [
             [

@@ -11,7 +11,7 @@
 
 namespace Micro\Plugin\Amqp\Business\Consumer\Processor;
 
-use Micro\Component\DependencyInjection\Autowire\AutowireHelperInterface;
+use Micro\Framework\Autowire\AutowireHelperInterface;
 use Micro\Plugin\Amqp\Business\Message\MessageReceived;
 use Micro\Plugin\Amqp\Business\Message\MessageReceivedInterface;
 use Micro\Plugin\Amqp\Exception\Consumer\MessageNackException;

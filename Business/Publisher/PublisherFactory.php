@@ -24,9 +24,6 @@ readonly class PublisherFactory implements PublisherFactoryInterface
     ) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function create(string $publisherName): PublisherInterface
     {
         $configuration = $this->pluginConfiguration->getPublisherConfiguration($publisherName);
